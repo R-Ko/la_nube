@@ -22,6 +22,9 @@ class UserApp(AbstractUser):
     terms = models.BooleanField(default = False) 
     must_change_password = models.BooleanField(default=False)
     
+    REQUIRED_FIELDS = ["nip", "email"]
+    USERNAME_FIELD = "username"
+    
     class Meta:
         managed = True
         verbose_name = 'UserApp'
