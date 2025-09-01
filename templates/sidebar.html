@@ -1,0 +1,708 @@
+{% load static %}
+<div class="sticky">
+  <div class="app-sidebar__overlay" data-bs-toggle="sidebar"></div>
+  <div class="app-sidebar" style="overflow-y: auto; height: 100vh">
+    <div class="side-header">
+      <a class="header-brand1" href="{% url 'core:index'%}">
+        <img
+          src="{% static 'images/logo.png' %}"
+          class="header-brand-img desktop-logo"
+          alt="logo"
+          style="margin: 0 auto; width: 20%"
+        />
+        <img
+          src="{% static 'images/logo.png' %}"
+          class="header-brand-img toggle-logo"
+          alt="logo"
+        />
+        <img
+          src="{% static 'images/logo.png' %}"
+          class="header-brand-img light-logo"
+          alt="logo"
+        />
+        <img
+          style="margin: 0 auto; width: 32%"
+          src="{% static 'images/logo.png' %}"
+          class="header-brand-img light-logo1"
+          alt="logo"
+        />
+      </a>
+      <!-- LOGO -->
+    </div>
+    <div class="main-sidemenu">
+      <div class="slide-left disabled" id="slide-left">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="#7b8191"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"
+          />
+        </svg>
+      </div>
+      <ul class="side-menu">
+        <li class="slide">
+          <a
+            class="side-menu__item has-link"
+            data-bs-toggle="slide"
+            href="{% url 'core:index'%}"
+            ><i class="side-menu__icon fe fe-home"></i
+            ><span class="side-menu__label">Inicio</span></a
+          >
+        </li>
+        <li class="slide">
+          <a
+            class="side-menu__item"
+            data-bs-toggle="slide"
+            href="javascript:void(0)"
+          >
+            <i class="side-menu__icon fa fa-child"></i>
+            <span class="side-menu__label">Mis Niños</span
+            ><i class="angle fe fe-chevron-right"></i>
+          </a>
+          <ul class="slide-menu">
+            <li class="panel sidetab-menu">
+              <div class="panel-body tabs-menu-body p-0 border-0">
+                <div class="tab-content">
+                  <div class="tab-pane active" id="side25">
+                    <ul class="sidemenu-list">
+                      <li class="side-menu-label1">
+                        <a href="javascript:void(0)">Submenu items</a>
+                      </li>
+                      
+
+                      {% if "Progenitor" == user.groups.all.0.name %}
+                      <li>
+                        <a
+                          href={% url 'core:terms'%}
+                          class="slide-item"
+                          >Inscribir</a
+                        >
+                      </li>
+                      {% endif %}
+                      <li class="sub-slide">
+                        <a
+                        href={% url 'core:child-list'%}  
+                        class="slide-item"
+                          >Listar</a
+                        >
+                      </li>
+                      {% if "Supervisor" == user.groups.all.0.name or user.is_staff %}
+                      <li>
+                        <a
+                          href={% url 'core:child-history'%}
+                          class="slide-item"
+                          >Histórico</a
+                        >
+                      </li>
+                      
+                      {% endif %}
+                      {% comment %} {% if "Supervisor" == user.groups.all.0.name or user.is_staff %}
+                      <li>
+                        <a
+                          href={% url 'core:daily-child'%}
+                          class="slide-item"
+                          >Reporte asistencia</a
+                        >
+                      </li>
+                      {% endif %} {% endcomment %}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </li>
+        {% if user.is_staff or "Supervisor" == user.groups.all.0.name %}
+        <li class="slide">
+          <a
+            class="side-menu__item"
+            data-bs-toggle="slide"
+            href="javascript:void(0)"
+          >
+            <i class="side-menu__icon fa fa-graduation-cap"></i>
+            <span class="side-menu__label">Educadoras</span
+            ><i class="angle fe fe-chevron-right"></i>
+          </a>
+          <ul class="slide-menu">
+            <li class="panel sidetab-menu">
+              <div class="panel-body tabs-menu-body p-0 border-0">
+                <div class="tab-content">
+                  <div class="tab-pane active" id="side25">
+                    <ul class="sidemenu-list">
+                      <li class="side-menu-label1">
+                        <a href="javascript:void(0)">Submenu items</a>
+                      </li>
+                      <li>
+                        <a
+                          href={% url 'core:professor-add'%}
+                          class="slide-item"
+                          >Crear</a
+                        >
+                      </li>
+                      <li class="sub-slide">
+                        <a
+                        href={% url 'core:professor-list'%}
+                          class="slide-item"
+                          >Listar</a
+                        >
+                      </li>
+                      {% if user.is_staff %}
+                      <li>
+                        <a
+                          href={% url 'core:professor-history'%}
+                          class="slide-item"
+                          >Histórico</a
+                        >
+                      </li>
+                      {% endif %}
+                      {% if "Supervisor" == user.groups.all.0.name or user.is_staff %}
+                      <li>
+                        <a
+                          href={% url 'core:daily-professor'%}
+                          class="slide-item"
+                          >Reporte asistencia</a
+                        >
+                      </li>
+                      {% endif %}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </li>
+        {% endif %}
+        {% if "Supervisor" == user.groups.all.0.name or "Profesor" == user.groups.all.0.name or user.is_staff %}
+        <li class="slide">
+          <a
+            class="side-menu__item"
+            data-bs-toggle="slide"
+            href="javascript:void(0)"
+          >
+            <i class="side-menu__icon icon icon-people"></i>
+            <span class="side-menu__label">Grupos</span
+            ><i class="angle fe fe-chevron-right"></i>
+          </a>
+          <ul class="slide-menu">
+            <li class="panel sidetab-menu">
+              <div class="panel-body tabs-menu-body p-0 border-0">
+                <div class="tab-content">
+                  <div class="tab-pane active" id="side25">
+                    <ul class="sidemenu-list">
+                      <li class="side-menu-label1">
+                        <a href="javascript:void(0)">Submenu items</a>
+                      </li>
+                      {% if "Supervisor" == user.groups.all.0.name or user.is_staff %}
+                      <li>
+                        <a
+                          href={% url 'core:class-add'%}
+                          class="slide-item"
+                          >Crear</a
+                        >
+                      </li>
+                      {% endif %}
+                      <li class="sub-slide">
+                        <a
+                        href={% url 'core:class-list'%}
+                          class="slide-item"
+                          >Listar</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </li>
+        {% endif %}
+        {% if "Profesor" == user.groups.all.0.name or user.is_staff %}
+        <li class="slide">
+          <a
+            class="side-menu__item"
+            data-bs-toggle="slide"
+            href="javascript:void(0)"
+          >
+            <i class="side-menu__icon fa fa-cut"></i>
+            <span class="side-menu__label">Actividades Ext.</span
+            ><i class="angle fe fe-chevron-right"></i>
+          </a>
+          <ul class="slide-menu">
+            <li class="panel sidetab-menu">
+              <div class="panel-body tabs-menu-body p-0 border-0">
+                <div class="tab-content">
+                  <div class="tab-pane active" id="side25">
+                    <ul class="sidemenu-list">
+                      <li class="side-menu-label1">
+                        <a href="javascript:void(0)">Submenu items</a>
+                      </li>
+                      <li>
+                        <a
+                          href={% url 'core:activity-add'%}
+                          class="slide-item"
+                          >Crear</a
+                        >
+                      </li>
+                      <li class="sub-slide">
+                        <a
+                        href={% url 'core:activity-list'%}
+                          class="slide-item"
+                          >Listar</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </li>
+        {% endif %}
+        {% if user.is_staff %}
+        <li class="slide">
+          <a
+            class="side-menu__item"
+            data-bs-toggle="slide"
+            href="javascript:void(0)"
+          >
+            <i class="side-menu__icon fa fa-group"></i>
+            <span class="side-menu__label">Padres</span
+            ><i class="angle fe fe-chevron-right"></i>
+          </a>
+          <ul class="slide-menu">
+            <li class="panel sidetab-menu">
+              <div class="panel-body tabs-menu-body p-0 border-0">
+                <div class="tab-content">
+                  <div class="tab-pane active" id="side25">
+                    <ul class="sidemenu-list">
+                      <li class="side-menu-label1">
+                        <a href="javascript:void(0)">Submenu items</a>
+                      </li>
+                      {% if user.is_staff %}
+                      <li>
+                        <a
+                          href={% url 'core:parent-add'%}
+                          class="slide-item"
+                          >Crear</a
+                        >
+                      </li>
+                      {% endif %}
+                      <li class="sub-slide">
+                        <a
+                        href={% url 'core:parent-list'%}
+                          class="slide-item"
+                          >Listar</a
+                        >
+                      </li>
+                      {% if user.is_staff %}
+                      <li>
+                        <a
+                          href={% url 'core:parent-history'%}
+                          class="slide-item"
+                          >Histórico</a
+                        >
+                      </li>
+                      {% endif %}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </li>
+        {% endif %}
+        {% comment %}or "Progenitor" == user.groups.all.0.name {% endcomment %}
+        {% if user.is_staff %}
+        <li class="slide">
+          <a
+            class="side-menu__item"
+            data-bs-toggle="slide"
+            href="javascript:void(0)"
+          >
+            <i class="side-menu__icon fa fa-home"></i>
+            <span class="side-menu__label">Familiares</span
+            ><i class="angle fe fe-chevron-right"></i>
+          </a>
+          <ul class="slide-menu">
+            <li class="panel sidetab-menu">
+              <div class="panel-body tabs-menu-body p-0 border-0">
+                <div class="tab-content">
+                  <div class="tab-pane active" id="side25">
+                    <ul class="sidemenu-list">
+                      <li class="side-menu-label1">
+                        <a href="javascript:void(0)">Submenu items</a>
+                      </li>
+                      {% if "Progenitor" == user.groups.all.0.name %}
+                      <li>
+                        <a
+                          href={% url 'core:family-add'%}
+                          class="slide-item"
+                          >Crear</a
+                        >
+                      </li>
+                      {% endif %}
+                      <li class="sub-slide">
+                        <a
+                        href={% url 'core:family-list'%}
+                          class="slide-item"
+                          >Listar</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </li>
+        {% endif %}
+        <li class="slide">
+          <a
+            class="side-menu__item"
+            data-bs-toggle="slide"
+            href="javascript:void(0)"
+          >
+            <i class="side-menu__icon fe fe-headphones"></i>
+            <span class="side-menu__label">Eventos</span
+            ><i class="angle fe fe-chevron-right"></i>
+          </a>
+          <ul class="slide-menu">
+            <li class="panel sidetab-menu">
+              <div class="panel-body tabs-menu-body p-0 border-0">
+                <div class="tab-content">
+                  <div class="tab-pane active" id="side25">
+                    <ul class="sidemenu-list">
+                      <li class="side-menu-label1">
+                        <a href="javascript:void(0)">Submenu items</a>
+                      </li>
+                      {% if "Supervisor" == user.groups.all.0.name or user.is_staff %}
+                      <li>
+                        <a
+                          href={% url 'core:event-add'%}
+                          class="slide-item"
+                          >Crear</a
+                        >
+                      </li>
+                      <li class="sub-slide">
+                        <a
+                        href={% url 'core:event-list'%}
+                          class="slide-item"
+                          >Listar</a
+                        >
+                      </li>
+                      {% endif %}   
+                      <li class="sub-slide">
+                        <a
+                        href={% url 'core:event-calendar'%}
+                          class="slide-item"
+                          >Calendario</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </li>     
+        {% if "Supervisor" == user.groups.all.0.name or "Progenitor" == user.groups.all.0.name or user.is_staff %}
+        <li class="slide">
+          <a
+            class="side-menu__item"
+            data-bs-toggle="slide"
+            href="javascript:void(0)"
+          >
+            <i class="side-menu__icon fe fe-file-text"></i>
+            <span class="side-menu__label">Reportes Infantiles</span
+            ><i class="angle fe fe-chevron-right"></i>
+          </a>
+          <ul class="slide-menu">
+            <li class="panel sidetab-menu">
+              <div class="panel-body tabs-menu-body p-0 border-0">
+                <div class="tab-content">
+                  <div class="tab-pane active" id="side25">
+                    <ul class="sidemenu-list">
+                      <li class="side-menu-label1">
+                        <a href="javascript:void(0)">Submenu items</a>
+                      </li>
+                      <li class="sub-slide">
+                        <a
+                        href={% url 'core:report-list'%}
+                          class="slide-item"
+                          >Listar</a
+                        >
+                      </li>
+                      {% if user.is_staff %}
+                      <li>
+                        <a
+                          href={% url 'core:report-history'%}
+                          class="slide-item"
+                          >Histórico</a
+                        >
+                      </li>
+                      {% endif %}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </li>
+        {% endif %}      
+        {% if "Supervisor" == user.groups.all.0.name or user.is_staff %}
+        <li class="slide">
+          <a
+            class="side-menu__item"
+            data-bs-toggle="slide"
+            href="javascript:void(0)"
+          >
+            <i class="side-menu__icon fa fa-money"></i>
+            <span class="side-menu__label">Facturas</span
+            ><i class="angle fe fe-chevron-right"></i>
+          </a>
+          <ul class="slide-menu">
+            <li class="panel sidetab-menu">
+              <div class="panel-body tabs-menu-body p-0 border-0">
+                <div class="tab-content">
+                  <div class="tab-pane active" id="side25">
+                    <ul class="sidemenu-list">
+                      <li class="side-menu-label1">
+                        <a href="javascript:void(0)">Submenu items</a>
+                      </li>
+                      {% if user.is_staff or "Supervisor" == user.groups.all.0.name %}
+                      <li class="sub-slide">
+                        <a
+                        href={% url 'core:bill-add'%}
+                          class="slide-item"
+                          >Crear</a
+                        >
+                      </li>
+                      {% endif %}
+                      {% if user.is_staff %}
+                      <li class="sub-slide">
+                        <a
+                        href={% url 'core:bill-list'%}
+                          class="slide-item"
+                          >Listar</a
+                        >
+                      </li>
+                      <li>
+                        <a
+                          href={% url 'core:bill-history'%}
+                          class="slide-item"
+                          >Histórico</a
+                        >
+                      </li>
+                      {% endif %}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </li>
+        {% endif %}
+        {% if "Supervisor" == user.groups.all.0.name or user.is_staff %}
+        <li class="slide">
+          <a
+            class="side-menu__item"
+            data-bs-toggle="slide"
+            href="javascript:void(0)"
+          >
+            <i class="side-menu__icon fe fe-bell"></i>
+            <span class="side-menu__label">Alertas</span
+            ><i class="angle fe fe-chevron-right"></i>
+          </a>
+          <ul class="slide-menu">
+            <li class="panel sidetab-menu">
+              <div class="panel-body tabs-menu-body p-0 border-0">
+                <div class="tab-content">
+                  <div class="tab-pane active" id="side25">
+                    <ul class="sidemenu-list">
+                      <li class="side-menu-label1">
+                        <a href="javascript:void(0)">Submenu items</a>
+                      </li>
+                      <li>
+                        <a
+                          href={% url 'core:alert-add'%}
+                          class="slide-item"
+                          >Crear</a
+                        >
+                      </li>
+                      <li class="sub-slide">
+                        <a
+                        href={% url 'core:alert-list'%}
+                          class="slide-item"
+                          >Listar</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </li>
+        {% endif %}
+        {% if user.is_staff or user.rol == "Supervisor" %}
+        <li class="slide">
+          <a
+            class="side-menu__item"
+            data-bs-toggle="slide"
+            href="javascript:void(0)"
+          >
+            <i class="side-menu__icon fa fa-user"></i>
+            <span class="side-menu__label">Usuarios</span
+            ><i class="angle fe fe-chevron-right"></i>
+          </a>
+          <ul class="slide-menu">
+            <li class="panel sidetab-menu">
+              <div class="panel-body tabs-menu-body p-0 border-0">
+                <div class="tab-content">
+                  <div class="tab-pane active" id="side25">
+                    <ul class="sidemenu-list">
+                      <li class="side-menu-label1">
+                        <a href="javascript:void(0)">Submenu items</a>
+                      </li>
+                      <li>
+                        <a
+                          href={% url 'core:user-add'%}
+                          class="slide-item"
+                          >Crear</a
+                        >
+                      </li>
+                      <li class="sub-slide">
+                        <a
+                        href={% url 'core:user-list'%}
+                          class="slide-item"
+                          >Listar</a
+                        >
+                      </li>
+                      <li>
+                        <a
+                          href={% url 'core:user-history'%}
+                          class="slide-item"
+                          >Histórico</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </li>
+        {% endif %}
+        {% comment %} <li class="slide">
+          <a
+            class="side-menu__item"
+            data-bs-toggle="slide"
+                  >
+            <i class="side-menu__icon fa fa-calendar"></i>
+            <span class="side-menu__label">Calendar</span>
+          </a>
+        </li>
+        <li class="slide">
+          <a
+            class="side-menu__item"
+            data-bs-toggle="slide"
+                >
+            <i class="side-menu__icon fa fa-envelope"></i>
+            <span class="side-menu__label">Inbox</span>
+          </a>
+        </li>
+        <li class="slide">
+          <a
+            class="side-menu__item"
+            data-bs-toggle="slide"
+                 >
+            <i class="side-menu__icon fa fa-tags"></i>
+            <span class="side-menu__label">Pricing</span>
+          </a>
+        </li>
+        <li class="slide">
+          <a
+            class="side-menu__item"
+            data-bs-toggle="slide"
+            href="javascript:void(0)"
+          >
+            <i class="side-menu__icon fa fa-users"></i>
+            <span class="side-menu__label">Collaborators</span
+            ><i class="angle fe fe-chevron-right"></i>
+          </a>
+          <ul class="slide-menu">
+            <li class="panel sidetab-menu">
+              <div class="panel-body tabs-menu-body p-0 border-0">
+                <div class="tab-content">
+                  <div class="tab-pane active" id="side25">
+                    <ul class="sidemenu-list">
+                      <li class="side-menu-label1">
+                        <a href="javascript:void(0)">Submenu items</a>
+                      </li>
+                      <li>
+                        <a
+                                                    class="slide-item"
+                          >Crear</a
+                        >
+                      </li>
+                      <li class="sub-slide">
+                        <a
+                          
+                          class="slide-item"
+                          >List</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </li>
+        <li class="slide">
+          <a
+            class="side-menu__item"
+            data-bs-toggle="slide"
+            href="javascript:void(0)"
+          >
+            <i class="side-menu__icon fa fa-desktop"></i>
+            <span class="side-menu__label">Web site</span
+            ><i class="angle fe fe-chevron-right"></i>
+          </a>
+          <ul class="slide-menu">
+            <li class="panel sidetab-menu">
+              <div class="panel-body tabs-menu-body p-0 border-0">
+                <div class="tab-content">
+                  <div class="tab-pane active" id="side25">
+                    <ul class="sidemenu-list">
+                      <li class="side-menu-label1">
+                        <a href="javascript:void(0)">Submenu items</a>
+                      </li>
+                      <li>
+                        <a
+                                                    class="slide-item"
+                          >Order</a
+                        >
+                      </li>
+                      <li class="sub-slide">
+                        <a
+                          
+                          class="slide-item"
+                          >List</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </li> {% endcomment %}
+      </ul>
+    </div>
+  </div>
+</div>

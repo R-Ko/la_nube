@@ -1,0 +1,407 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title_page %}
+{{ title_page.capitalize }}
+{% endblock %}
+
+{% block breadcrumb %}
+
+    <li class="breadcrumb-item ">
+        <a href="">{{ title_page.capitalize }}</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">
+        {% if not object %}
+            Crear
+        {% else %}
+            Edit
+        {% endif %}
+        {{ title_page.capitalize }}
+    </li>
+{% endblock %}
+
+{% block content %}
+    <div class="col-lg-12 col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    {% if not object %}
+                        Crear
+                    {% else %}
+                        Edit
+                    {% endif %}
+                    {{ title_page.capitalize }}
+                </h3>
+            </div>
+            {% comment %} <div class="card-body">
+                <form class="needs-validation" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% include 'form_snippet.html' %}
+                    <a href="{% url "core:ownership-add" %}" class="btn btn-danger">Cancelar</a>
+                    <button type="submit" class="btn btn-success waves-effect waves-light m-r-10">Guardar</button>
+                </form>
+            </div> {% endcomment %}
+            <div class="card-body">
+            <form class="needs-validation was-validated" novalidate method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div id="wizard3">                    
+                    <h3>Details</h3>
+                    <section name="detalles">                       
+                            {% for field in form %}
+                                {% if field.name in step_one %}
+                                    {% if field.widget_type == "clearablefile" %}
+                                        <div class="col-xl-12 mb-3">
+                                            <div class="form-file">
+                                                <label for="val{{ field.name }}1">{{ field.label_tag }}</label>                            
+                                                <input type="file" class="form-control" id="id_{{ field.name }}" name="{{ field.name }}">
+                                            </div>
+                                        </div>
+                                        <br>
+                                    {% elif field.widget_type == "select" %}
+                                    <div class="form-group">
+                                        <label class="form-label">{{ field.label_tag }}</label>
+                                        <select data-placeholder="Select one or more..." id="id_{{ field.name }}" name="{{ field.name }}" class="select2 form-control">
+                                            {% for choice in field.field.choices %}
+                                                <option value="{{ choice.0 }}" {% if field.value == choice.0 %}selected{% endif %}>{{ choice.1 }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    {% else %}
+                                            <div class="form-group">
+                                                <div class="form-floating">
+                                                    <input {% if object %}value="{{field.value}}"{% endif %} placeholder="" type="{{ field.field.widget.input_type }}" class="form-control" id="id_{{ field.name }}" name="{{ field.name }}" {% if field.field.required %}required{% endif %}>
+                                                    <label for="val{{ field.name }}">{{ field.label_tag }}</label>
+                                                </div>
+                                            </div>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                            <div class="form-group">
+                                <label class="form-label">Cover Image:</label>
+                                <input accept=".png, .jpg, .jpeg" data-default-file="{{ form.image.value.url }}" type="file" class="dropify" name="image" data-bs-height="180">
+                            </div>
+                            {% if object %}<button class="btn btn-success" type="submit">Guardar</button>{% endif %}
+                    </section>
+                    <h3>Summary</h3>
+                    <section name="resumen">
+                            {% for field in form %}
+                                {% if field.name in step_two %}
+                                    {% if field.widget_type == "clearablefile" %}
+                                        <div class="form-group">
+                                                <label class="form-label" for="val{{ field.name }}1">{{ field.label_tag }}</label>
+                                                <input accept=".pdf" data-default-file="{{ form.pdf_sheet.value.url }}" type="file" class="dropify" data-bs-height="180" id="id_{{ field.name }}" name="{{ field.name }}">                           
+                                        </div>
+                                        <br>
+                                    {% elif field.widget_type == "select" %}
+                                        <div class="form-group">
+                                            <label class="form-label">{{ field.label_tag }}</label>
+                                                <select data-placeholder="Select..." id="id_{{ field.name }}" name="{{ field.name }}" class="select2 form-control">
+                                                    {% for choice in field.field.choices %}
+                                                        <option value="{{ choice.0 }}" {% if field.value == choice.0 %}selected{% endif %}>{{ choice.1 }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                        </div>
+                                    {% elif field.widget_type == "textarea" %}
+                                        <div class="form-group">
+                                            <div class="form-group">
+                                                <label class="form-label" for="val{{ field.name }}">{{ field.label_tag }}</label>                                            
+                                                <textarea id="id_{{ field.name }}" name="{{ field.name }}" {% if field.field.required %}required{% endif %} class="form-control mb-4" placeholder="" rows="5">{% if object %}{{field.value}}{% endif %}</textarea>
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        <div class="form-group">
+                                            <div class="form-floating">
+                                                <input {% if object %}value="{{field.value}}"{%endif%} placeholder="" type="{{ field.field.widget.input_type }}" class="form-control" id="id_{{ field.name }}" name="{{ field.name }}" {% if field.field.required %}required{% endif %}>
+                                                <label for="val{{ field.name }}">{{ field.label_tag }}</label>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                            {% if object %}<button class="btn btn-success" type="submit">Guardar</button>{% endif %}
+                    </section>
+                    <h3>Features</h3>
+                    <section name="caracteristica">
+                            {% for field in form %}
+                                {% if field.name in step_three %}
+                                {% if field.widget_type == "clearablefile" %}
+                                <div class="col-xl-12 mb-3">
+                                    <div class="form-file">
+                                        <label for="val{{ field.name }}1">{{ field.label_tag }}</label>                            
+                                        <input type="file" class="form-control" id="id_{{ field.name }}" name="{{ field.name }}" {% if field.field.required %}required{% endif %}>
+                                    </div>
+                                </div>
+                                <br>
+                            {% elif field.widget_type == "select" %}
+                                <div class="form-group">
+                                    <label class="form-label">{{ field.label_tag }}</label>
+                                        <select data-placeholder="Select..." id="id_{{ field.name }}" name="{{ field.name }}" class="select2 form-control">
+                                            {% for choice in field.field.choices %}
+                                                <option value="{{ choice.0 }}" {% if field.value == choice.0 %}selected{% endif %}>{{ choice.1 }}</option>
+                                            {% endfor %}
+                                        </select>
+                                </div>
+                            {% else %}
+                                    <div class="form-group">
+                                        <div class="form-floating">
+                                            <input {% if object %}value="{{field.value}}"{% endif %} placeholder="" type="{{ field.field.widget.input_type }}" class="form-control" id="id_{{ field.name }}" name="{{ field.name }}" {% if field.field.required %}required{% endif %}>
+                                            <label for="val{{ field.name }}">{{ field.label_tag }}</label>
+                                        </div>
+                                    </div>
+                            {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                            {% if object %}<button class="btn btn-success" type="submit">Guardar</button>{% endif %}
+                    </section>
+                    <h3>Equipment</h3>
+                    <section name="equipamiento">                        
+                        {% for field in form %}
+                            {% if field.name in step_four %}
+                                {% if field.widget_type == "clearablefile" %}
+                                    <div class="col-xl-12 mb-3">
+                                        <div class="form-file">
+                                            <label for="val{{ field.name }}1">{{ field.label_tag }}</label>                            
+                                            <input type="file" class="form-control" id="id_{{ field.name }}" name="{{ field.name }}" {% if field.field.required %}required{% endif %}>
+                                        </div>
+                                    </div>
+                                    <br>
+                                {% elif field.widget_type == "select" %}
+                                    <div class="form-group">
+                                        <div class="form-floating">
+                                            {{field}}
+                                            <label for="val{{ field.name }}">{{ field.label_tag }}</label>
+                                        </div>
+                                    </div>
+                                {% elif field.widget_type == "selectmultiple" %}
+                                    <div class="form-group">
+                                        <label class="form-label">{{ field.label_tag }}</label>
+                                            <select data-placeholder="Select one or more..." id="id_{{ field.name }}" name="{{ field.name }}" class="select2 form-control" multiple="multiple">
+                                                {% for choice in field.field.choices %}
+                                                    <option value="{{ choice.0 }}" {% if choice.0 in field.value %}selected{% endif %}>{{ choice.1 }}</option>
+                                                {% endfor %}
+                                            </select>
+                                    </div>
+                                {% else %}
+                                        <div class="form-group">
+                                            <div class="form-floating">
+                                                <input {% if object %}value="{{field.value}}"{%endif%} placeholder="" type="{{ field.field.widget.input_type }}" class="form-control" id="id_{{ field.name }}" name="{{ field.name }}" {% if field.field.required %}required{% endif %}>
+                                                <label for="val{{ field.name }}">{{ field.label_tag }}</label>
+                                            </div>
+                                        </div>
+                                {% endif %}                                
+                            {% endif %}
+                        {% endfor %} <br>
+                        <button class="btn btn-success" type="submit">Guardar</button>
+                    </section>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block jsextra %}
+
+    
+    <script src="{% static 'plugins/bootstrap5-typehead/autocomplete.js' %}"></script>
+    <script src="{% static 'js/typehead.js' %}"></script>
+    <script src="{% static 'plugins/formwizard/jquery.smartWizard.js' %}"></script>
+    <script src="{% static 'plugins/formwizard/fromwizard.js' %}"></script>
+    <script src="{% static 'plugins/jquery-steps/jquery.steps.min.js' %}"></script>
+    <script src="{% static 'plugins/parsleyjs/parsley.min.js' %}"></script>
+    <script src="{% static 'js/form-wizard.js' %}"></script>
+
+
+    <script src="{% static 'plugins/select2/select2.full.min.js' %}"></script>
+    <script src="{% static 'js/select2.js' %}"></script>
+    <script src="{% static 'js/form-validation.js' %}"></script>
+
+    <script src="{% static 'js/formelementadvnced' %}"></script>
+    <script src="{% static 'js/form-elements.js' %}"></script>
+
+
+    <script src="{% static 'plugins/fileuploads/js/fileupload.js' %}"></script>
+    <script src="{% static 'plugins/fileuploads/js/file-upload.js' %}"></script>
+    <script src="{% static 'plugins/fancyuploder/jquery.ui.widget.js' %}"></script>
+    <script src="{% static 'plugins/fancyuploder/jquery.fileupload.js' %}"></script>
+    <script src="{% static 'plugins/fancyuploder/jquery.iframe-transport.js' %}"></script>
+    <script src="{% static 'plugins/fancyuploder/jquery.fancy-fileupload.js' %}"></script>
+    <script src="{% static 'plugins/fancyuploder/fancy-uploader.js' %}"></script>
+
+    <script>        
+        $(document).ready(function() {
+
+        var CATEGORY_SHIP_SAIL_CHOICES = [
+            ('Catamaran', 'Catamaran'),
+            ('Classic', 'Classic'),
+            ('Cruiser', 'Cruiser'),
+            ('Cruiser Racer', 'Cruiser Racer'),
+            ('Cutter', 'Cutter'),
+            ('Daysailer/Weekender', 'Daysailer/Weekender'),
+            ('Ketch', 'Ketch'),
+            ('Motorsailer', 'Motorsailer'),
+            ('Trimaran', 'Trimaran'),
+            ('Racer', 'Racer'),
+            ('Schooner', 'Schooner'),
+            ('Sloop', 'Sloop'),
+            ('Yawl', 'Yawl'),
+            ('Other', 'Other'),
+            ('Monohull', 'Monohull'),
+            ('Gulet', 'Gulet'),
+        ]
+
+        var CATEGORY_SHIP_MOTOR_CHOICES =  [
+            ('Catamaran', 'Catamaran'),
+            ('Classic', 'Classic'),
+            ('Cruiser', 'Cruiser'),
+            ('Airboat', 'Airboat'),
+            ('Aluminum', 'Aluminum'),
+            ('Fishing', 'Fishing'),
+            ('Angler', 'Angler'),
+            ('Bass Boat', 'Bass Boat'),
+            ('Bow Rider', 'Bow Rider'),
+            ('Center Console', 'Center Console'),
+            ('Convertible', 'Convertible'),
+            ('Cuddy Cabin', 'Cuddy Cabin'),
+            ('Deck Boat', 'Deck Boat'),
+            ('Dive Boat', 'Dive Boat'),
+            ('Downeast', 'Downeast'),
+            ('Dual Console', 'Dual Console'),
+            ('Duck Boat', 'Duck Boat'),
+            ('Express Cruiser', 'Express Cruiser'),
+            ('Fish and Ski', 'Fish and Ski'),
+            ('Flats Boat', 'Flats Boat'),
+            ('Flybridge', 'Flybridge'),
+            ('Houseboat', 'Houseboat'),
+            ('Inflatable Outboard', 'Inflatable Outboard'),
+            ('Jet Boat', 'Jet Boat'),
+            ('Jet Ski/Personal Water Craft', 'Jet Ski/Personal Water Craft'),
+            ('Jon Boat', 'Jon Boat'),
+            ('Mega Yatch', 'Mega Yatch'),
+            ('Motor Yatch', 'Motor Yatch'),
+            ('Offshore Sport Fishing', 'Offshore Sport Fishing'),
+            ('Perfomance', 'Perfomance'),
+            ('Perfomance Fishing', 'Perfomance Fishing'),
+            ('PilotHouse', 'PilotHouse'),
+            ('Pontoon', 'Pontoon'),
+            ('Rigid Inflatable', 'Rigid Inflatable'),
+            ('Runabout', 'Runabout'),
+            ('Saltwater Fishing', 'Saltwater Fishing'),
+            ('Ski and Wakeboard', 'Ski and Wakeboard'),
+            ('Skiff', 'Skiff'),
+            ('Trawler', 'Trawler'),
+            ('Walkaround', 'Walkaround'),
+            ('Weekender', 'Weekender'),
+            ('Motor Boat', 'Motor Boat'),
+        ]
+            $('#id_type_ship').change(function() {
+                var type_ship = $(this).val();
+                var category_ship_select = $('#id_category_ship');
+                category_ship_select.empty();
+                if (type_ship == 'Sail') {
+                    $.each(CATEGORY_SHIP_SAIL_CHOICES, function(index, value) {
+                        category_ship_select.append($('<option>', {value: value, text: value}));
+                    });
+                } else if (type_ship == 'Motor') {
+                    $.each(CATEGORY_SHIP_MOTOR_CHOICES, function(index, value) {
+                        category_ship_select.append($('<option>', {value: value, text: value}));
+                    });
+                }
+            });
+
+            {% if not object %}
+            
+                $('a[href="#next"]').click(function(){
+                    $('ul[aria-label="Pagination"]').find('li').each(function() {
+                        $(this).prop('hidden', true);
+                    })
+                });
+    
+                $('ul[aria-label="Pagination"]').find('li').each(function() {
+                    $(this).prop('hidden', true);
+                })
+    
+                var element = $('section[name="detalles"]').find('input, textarea, select').on('change', function() {
+                    var isValid = true;
+                    $(this).closest('section[name="detalles"]').find('input, textarea, select').each(function() {
+                        if ($(this).val() === '') {
+                            isValid = false;
+                            return false;
+                        }
+                    });
+                    if (isValid) {
+                        $('ul[aria-label="Pagination"]').find('li').each(function() {
+                            $(this).prop('hidden', false);
+                        })
+                    } else {
+                        $('ul[aria-label="Pagination"]').find('li').each(function() {
+                            $(this).prop('hidden', true);
+                        })
+                    }
+                })
+                var element = $('section[name="resumen"]').find('input, textarea, select').on('change', function() {
+                    var isValid = true;
+                    $(this).closest('section[name="resumen"]').find('input, textarea, select').each(function() {
+                        if ($(this).val() === '') {
+                            isValid = false;
+                            return false;
+                        }
+                    });
+                    if (isValid) {
+                        $('ul[aria-label="Pagination"]').find('li').each(function() {
+                            $(this).prop('hidden', false);
+                        })
+                    } else {
+                        $('ul[aria-label="Pagination"]').find('li').each(function() {
+                            $(this).prop('hidden', true);
+                        })
+                    }
+                })
+                var element = $('section[name="caracteristica"]').find('input, textarea, select').on('change', function() {
+                    var isValid = true;
+                    $(this).closest('section[name="caracteristica"]').find('input, textarea, select').each(function() {
+                        if ($(this).val() === '') {
+                            isValid = false;
+                            return false;
+                        }
+                    });
+                    if (isValid) {
+                        $('ul[aria-label="Pagination"]').find('li').each(function() {
+                            $(this).prop('hidden', false);
+                        })
+                    } else {
+                        $('ul[aria-label="Pagination"]').find('li').each(function() {
+                            $(this).prop('hidden', true);
+                        })
+                    }
+                })    
+                
+            {% else %}
+
+            $('ul[role="tablist"]').find('li').each(function() {
+                $(this).removeClass("disabled")
+            })
+
+            var element = $('section[name="caracteristica"]').find('input, textarea, select').each(function() {
+                    var isValid = true;
+                    if ($(this).val() === '') {
+                        isValid = false;
+                        return false;
+                    }
+                if (isValid) {
+                    $('ul[aria-label="Pagination"]').find('li').each(function() {
+                        $(this).prop('hidden', true);
+                    })
+                } else {
+                    $('ul[aria-label="Pagination"]').find('li').each(function() {
+                        $(this).prop('hidden', true);
+                    })
+                }
+            })
+            {% endif %}
+            
+        });
+
+    </script>
+
+{% endblock %}

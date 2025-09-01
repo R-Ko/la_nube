@@ -1,0 +1,332 @@
+{% extends "base.html" %} 
+{% load static %} 
+{% block title_page %}{{title_page.capitalize }}{% endblock %} 
+{% block breadcrumb %}
+
+<li class="breadcrumb-item">
+  <a href="">{{ title_page.capitalize }}</a>
+</li>
+{% endblock %} 
+
+{% block content %} 
+
+<div class="modal fade" id="modaldemo8">
+    <div
+      class="modal-dialog modal-md modal-dialog-centered"
+      role="document"
+    >
+      <div class="modal-content modal-content-demo">
+        <div class="modal-header">
+            <h6 class="modal-title"><strong>Último Reporte Infantil</strong></h6><button aria-label="Close" class="btn-close" data-bs-dismiss="modal"><span aria-hidden="true">×</span></button>
+        </div>
+        <div class="modal-body">
+            <p><strong>Tipo:</strong> {{last_report.type}}</p>
+            <p><strong>Fecha:</strong> {{last_report.date|date:"d-m-Y"}}</p>
+            <p><strong>Nota:</strong> {{last_report.note}}</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-light" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+    </div>
+    </div>
+  </div>
+
+
+<div class="row" id="user-profile">
+  <div class="col-lg-12">
+      <div class="card">
+          <div class="card-body">
+              <div class="wideget-user mb-2">
+                  <div class="row">
+                      <div class="col-lg-12 col-md-12">
+                          <div class="row">
+                              <div class="panel profile-cover">
+                                  <div class="profile-cover__action bg-img"></div>
+                                  <div class="profile-cover__img">
+                                      <div class="profile-img-1">
+                                            {% if child.image %}
+                                          <img src="{{MEDIA_URL}}{{object.image.url}}" alt="img">
+                                            {% endif %}
+                                      </div>
+                                      <div class="profile-img-content text-dark text-start">
+                                          <div class="text-dark">
+                                              <h3 class="h3 mb-2">{{object.first_name}}</h3>
+                                              <h5 class="text-muted">{{object.last_name}}</h5>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="btn-profile">                                    
+                                      <form
+                                        action="{% url 'core:child-delete' object.id %}"
+                                        method="post"
+                                        enctype="multipart/form-data"
+                                        >
+                                        {% if "Progenitor" == user.groups.all.0.name or user.is_staff %}
+                                        {% if classgroup.0 %}
+                                        <a href="{% url 'core:class-gallery' classgroup.0.pk %}" class="btn btn-info mt-1 mb-1"> <i class="fa fa-camera"></i> <span>Galería</span></a>
+                                        {% endif %}
+                                        {% if "Progenitor" == user.groups.all.0.name %}
+                                      <a href="{% url 'core:child-edit' object.pk %}" class="btn btn-primary mt-1 mb-1"> <i class="fa fa-edit"></i> <span>Editar</span></a>
+                                        {% endif %}
+                                        {% if "Progenitor" == user.groups.all.0.name %}
+                                      <a href="{% url 'core:family-add' %}?child={{ object.id }}" 
+                                        class="btn btn-primary mt-1 mb-1">
+                                        <i class="fa fa-user-plus"></i> <span>Añadir Familiar</span>
+                                        </a>
+                                        {% endif %}
+                                      {% endif %}
+                                   
+                                        {% if "Supervisor" == user.groups.all.0.name or "Profesor" == user.groups.all.0.name or user.is_staff %}
+                                        {% if object.active %}
+                                      <a href="{% url 'core:report-add' object.pk %}" class="btn btn-success mt-1 mb-1"> <i class="fe fe-file-text"></i> <span>Reportar</span></a>      
+                                      {% endif %}
+                                      {% endif %}
+                                      <a data-bs-effect="effect-flip-horizontal" data-bs-toggle="modal" href="#modaldemo8" class="btn btn-success mt-1 mb-1"> <i class="fa fa-file-text"></i> <span>Último Reporte</span></a>                                
+                                      <a href="{% url 'core:report-all' object.pk %}" class="btn btn-success mt-1 mb-1"> <i class="fa fa-files-o"></i> <span>Reportes</span></a>
+                                        {% csrf_token %}
+                                        {% if "Supervisor" == user.groups.all.0.name or user.is_staff %}
+                                        <button
+                                            onclick="return confirm('¿Estás seguro de realizar esta acción?')"
+                                            type="submit"
+                                            class="btn btn-danger"
+                                        >
+                                            <span class="fe fe-trash-2"> </span> 
+                                            {% if object.active %}
+                                                Desmatricular
+                                            {% else %}
+                                                Eliminar
+                                            {% endif %}
+                                        </button>
+                                        {% endif %}
+                                      </form>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="row">
+                              <div class="px-0 px-sm-4">
+                                  <div class="social social-profile-buttons mt-5 float-end">
+                                      <div class="mt-7">
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="row">
+          <div class="col-xl-3">
+              <div class="card">
+                  <div class="card-header">
+                      <div class="card-title"><i class="fa fa-street-view"></i> Sobre mi</div>
+                  </div>
+                  <div class="card-body">
+                      <div class="d-flex align-items-center mb-3 mt-3">
+                          <div class="me-4 text-center text-primary">
+                              <span><i class="fa fa-address-card fs-20"></i></span>
+                          </div>
+                          <div>
+                              <strong>{{object.nip}}</strong>
+                          </div>
+                      </div>
+                      <div class="d-flex align-items-center mb-3 mt-3">
+                          <div class="me-4 text-center text-primary">
+                              <span>
+                                {% if object.sex == "F" %}
+                                   <i class="fa fa-female fs-20"></i>
+                                {% else %}
+                                   <i class="fa fa-male fs-20"></i>
+                                {% endif %}
+                              </span>
+                          </div>
+                          <div>
+                               <strong class="ms-2">{{object.get_sex_display}}</strong>
+                          </div>
+                      </div>
+                      <div class="d-flex align-items-center mb-3 mt-3">
+                          <div class="me-4 text-center text-primary">
+                              <span><i class="fe fe-map-pin fs-20"></i></span>
+                          </div>
+                          <div>
+                              <strong>{{object.address}}</strong>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="card">
+                  <div class="card-header">
+                      <div class="card-title">
+                        <i class="fa fa-heartbeat"></i> Fuerte & Saludable
+                      </div>
+                  </div>
+                  <div class="card-body">
+                      <p class="text-primary">{{object.health_requirements|default:"-"}}</p>
+                  </div>
+              </div>      
+          </div>
+          <div class="col-xl-3">
+              <div class="card">
+                  <div class="card-header">
+                      <div class="card-title"><i class="fa fa-slideshare"></i> Mis Padres</div>
+                  </div>
+                  <div class="card-body">
+                      <div class="">
+                            {% if mother %}                      
+                            <div class="media overflow-visible">
+                                <div class="media-body valign-middle mt-2">
+                                    <i class="fa fa-female text-primary"></i> {{mother}}
+                                    <p class="text-muted mb-0"><i class="fa fa-phone text-primary"></i> {{mother.phone}}</p>
+                                    <a
+                                        id="bDetails"
+                                        href="{% url 'core:parent-edit' mother.id %}"
+                                        class=""
+                                    >
+                                        <span class="fe fe-edit"> </span> Editar
+                                    </a>
+                                </div>
+                            </div>
+                            <hr>
+                            {% endif %}
+                            {% if father %}     
+                            <div class="media overflow-visible mt-sm-5">
+                                <div class="media-body valign-middle mt-2">
+                                    <i class="fa fa-male text-success"></i> {{father}}
+                                    <p class="text-muted mb-0"><i class="fa fa-phone text-success"></i> {{father.phone}}</p>
+                                    <a
+                                        id="bDetails"
+                                        href="{% url 'core:parent-edit' father.id %}"
+                                        class=""
+                                    >
+                                        <span class="fe fe-edit"> </span> Editar
+                                    </a>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% if not mother and not father%}
+                            <p>Eyy!, agrega los que faltan</p>
+                            {% endif %}
+                      </div>
+                  </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                      <i class="fa fa-tint"></i> Mis medicinas
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p class="text-primary">{{object.periodic_medications|default:"-"}}</p>
+                </div>
+              </div>
+          </div>
+          <div class="col-xl-3">              
+              <div class="card">
+                <div class="card-header">
+                    <div class="card-title"><i class="fa fa-car"></i> Me voy con...</div>
+                </div>
+                <div class="card-body">
+                    <div class="">
+                        {% for member in family_approved %}                   
+                            <div class="media overflow-visible">
+                                <div class="media-body valign-middle mt-2">
+                                    <i class="fa fa-user text-primary"></i> {{member}}
+                                    <p class="text-muted mb-0"><i class="fa fa-address-card text-primary"></i> {{member.ic}}</p>
+                                    <p class="text-muted mb-0"><i class="fa fa-group text-primary"></i> {{member.relationship}}</p>
+                                    <a
+                                    id="bDetails"
+                                    href="{% url 'core:family-edit' member.id %}"
+                                    class=""
+                                >
+                                    <span class="fe fe-edit"> </span> Editar
+                                </a>
+                                </div>
+                            </div>
+                            <hr>
+                        {% empty %}
+                          <p>Uppsss, no hay nadie autorizado</p>
+                        {% endfor %}
+                    </div>
+                </div>
+              </div>
+              <div class="card">
+                  <div class="card-header">
+                      <div class="card-title">
+                        <i class="fa fa-shopping-basket"></i> Cuidado con esto...
+                      </div>
+                  </div>
+                  <div class="card-body">
+                      <p class="text-primary">{{object.food_requirements|default:"-"}}</p>
+                  </div>
+              </div>        
+          </div>
+          <div class="col-xl-3">     
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title"><i class="fa fa-group"></i> Esta es mi familia</div>
+                </div>
+                <div class="card-body">
+                    <div class="">                      
+                      {% for member in familys %}                          
+                      <div class="media overflow-visible">
+                        <div class="media-body valign-middle mt-2">
+                            <i class="fa fa-user text-primary"></i> {{member}}
+                            <p class="text-muted mb-0"><i class="fa fa-hourglass text-primary"></i> {{member.age}} año(s)</p>
+                            <p class="text-muted mb-0"><i class="fa fa-group text-primary"></i> {{member.relationship}}</p>
+                            <a
+                                id="bDetails"
+                                href="{% url 'core:family-edit' member.id %}"
+                                class=""
+                              >
+                                <span class="fe fe-edit"> </span> Editar
+                              </a>
+                        </div>
+                      </div>
+                      <hr>
+                        {% empty %}
+                        <p>Eyy!, agrega los que faltan</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+             <div class="card">
+                  <div class="card-header">
+                      <div class="card-title">
+                        <i class="fa fa-shopping-basket"></i> Observaciones
+                      </div>
+                  </div>
+                  <div class="card-body">
+                      <p class="text-primary">{{object.observations|default:"-"}}</p>
+                  </div>
+              </div>  
+        </div>
+      </div>
+  </div>
+  <!-- COL-END -->
+</div>
+{% endblock %} 
+{% block jsextra %}
+
+<script src="{% static 'plugins/bootstrap5-typehead/autocomplete.js' %}"></script>
+<script src="{% static 'js/typehead.js' %}"></script>
+
+<script src="{% static 'plugins/datatable/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/dataTables.bootstrap5.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/buttons.bootstrap5.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/jszip.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/pdfmake/pdfmake.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/pdfmake/vfs_fonts.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/buttons.html5.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/buttons.print.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/buttons.colVis.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/responsive.bootstrap5.min.js' %}"></script>
+<script src="{% static 'js/table-data.js' %}"></script>
+
+<script>
+  $(document).ready(function () {});
+</script>
+
+{% endblock %}

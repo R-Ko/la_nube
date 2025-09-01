@@ -1,0 +1,81 @@
+{% extends "base.html" %} 
+{% load static %} 
+{% block title_page%}
+{{title_page.capitalize }}
+{% endblock %} 
+{% block breadcrumb %}
+
+<li class="breadcrumb-item">
+  <a href="#">{{ title_page.capitalize }}</a>
+</li>
+{% endblock %} {% block content %}
+<div class="row row-cols-4">
+  {% for event in event_list %}
+  <div class="col-xl-4 col-md-6 col-sm-12">
+    <div class="card overflow-hidden list-child">
+      <img
+        src="{{MEDIA_URL}}{{event.cover.url}}"
+        class="card-img-top"
+        alt="img"
+      />
+      <div class="card-body">
+        <h5 class="card-title">{{event.name}}</h5>
+        <p class="card-text">{{event.description}}</p>
+        <form
+          action="{% url 'core:event-delete' event.id %}"
+          method="post"
+          enctype="multipart/form-data"
+        >{% if "Supervisor" == user.groups.all.0.name or user.is_staff %}
+          <a
+            id="bDetails"
+            href="{% url 'core:event-edit' event.id %}"
+            class="btn btn-sm btn-primary"
+          >
+            <span class="fe fe-edit"> </span>
+          </a>
+
+          {% csrf_token %}
+          <button
+            onclick="return confirm('¿Estás seguro de eliminar el registro?')"
+            type="submit"
+            class="btn btn-sm btn-danger"
+          >
+            <span class="fe fe-trash-2"> </span>
+          </button>
+          {% endif %}
+        </form>
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <div class="card border p-0">
+    <div class="card-body text-center">
+      <p class="card-text">No hay elementos que mostrar.</p>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %} {% block jsextra %}
+
+<script src="{% static 'plugins/bootstrap5-typehead/autocomplete.js' %}"></script>
+<script src="{% static 'js/typehead.js' %}"></script>
+
+<script src="{% static 'plugins/datatable/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/dataTables.bootstrap5.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/buttons.bootstrap5.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/jszip.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/pdfmake/pdfmake.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/pdfmake/vfs_fonts.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/buttons.html5.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/buttons.print.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/buttons.colVis.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/responsive.bootstrap5.min.js' %}"></script>
+<script src="{% static 'js/table-data.js' %}"></script>
+
+<script>
+  $(document).ready(function () {});
+</script>
+
+{% endblock %}

@@ -1,0 +1,115 @@
+{% extends "base.html" %} 
+{% load static %}
+{% block body %}
+<div class="login-img">
+
+    <!-- GLOABAL LOADER -->
+    <div id="global-loader">
+        <img src="{% static 'images/loader.svg' %}" class="loader-img" alt="Loader">
+    </div>
+    <!-- /GLOABAL LOADER -->
+
+    <!-- PAGE -->
+    <div class="page">
+        <div class="">
+            <!-- Theme-Layout -->
+
+
+            <div class="text-center container-login100">
+                {% if form.errors %}
+                    {% for key, value in form.errors.items %}                        
+                        <div class="alert alert-default" role="alert">
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-hidden="true">×</button>
+                            {{value}}
+                        </div>
+                    {% endfor %} 
+                {% endif %}
+                {% if messages %} {% for message in messages %}
+                <div class="alert alert-default" role="alert">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-hidden="true">×</button>
+                    {{message}}
+                </div>
+                {% endfor %} {% endif %}
+            </div>
+
+
+            <!-- CONTAINER OPEN -->
+            <div class="col col-login mx-auto mt-7">
+                <div class="text-center">
+                    <a href="index.html"><img src="{% static 'images/logo_tcm.png' %}" class="header-brand-img" alt=""></a>
+                </div>
+            </div>
+            <div class="container-login100">
+                <div class="wrap-login100 p-6">
+                        <form class="login100-form validate-form" method="post" action="">
+                            {% csrf_token %}
+                        <span class="login100-form-title pb-5">
+                            La Nube
+                        </span>
+                        
+                                        <div class="wrap-input100 validate-input input-group" data-bs-validate="Valid email is required: ex@abc.xyz">
+                                            <a href="javascript:void(0)" class="input-group-text bg-white text-muted">
+                                                <i class="mdi mdi-account" aria-hidden="true"></i>
+                                            </a>
+                                            <input value="{{form.first_name.value|default:''}}" required id="id_first_name" name="first_name" class="input100 border-start-0 form-control ms-0" type="text" autocomplete="off" placeholder="First Name">
+                                        </div>
+                                        <div class="wrap-input100 validate-input input-group" data-bs-validate="Valid email is required: ex@abc.xyz">
+                                            <a href="javascript:void(0)" class="input-group-text bg-white text-muted">
+                                                <i class="mdi mdi-account" aria-hidden="true"></i>
+                                            </a>
+                                            <input value="{{form.last_name.value|default:''}}" required id="id_last_name" name="last_name" class="input100 border-start-0 form-control ms-0" type="text" autocomplete="off" placeholder="Last Name">
+                                        </div>
+                                        <div class="wrap-input100 validate-input input-group" data-bs-validate="Valid email is required: ex@abc.xyz">
+                                            <a href="javascript:void(0)" class="input-group-text bg-white text-muted">
+                                                <i class="mdi mdi-account" aria-hidden="true"></i>
+                                            </a>
+                                            <input value="{{form.username.value|default:''}}" required id="id_username" name="username" class="input100 border-start-0 form-control ms-0" type="text" autocomplete="off" placeholder="Username">
+                                        </div>
+                                        <div class="wrap-input100 validate-input input-group">
+                                            <a href="javascript:void(0)" class="input-group-text bg-white text-muted">
+                                                <i class="zmdi zmdi-email text-muted" aria-hidden="true"></i>
+                                            </a>
+                                            <input value="{{form.email.value|default:''}}" class="input100 border-start-0 form-control ms-0" placeholder="Email" type="email" name="email" autocomplete="off" required="" id="id_email">
+                                        </div>
+                                        <div class="wrap-input100 validate-input input-group" id="Password-toggle">
+                                            <a href="javascript:void(0)" class="input-group-text bg-white text-muted">
+                                                <i class="zmdi zmdi-eye text-muted" aria-hidden="true"></i>
+                                            </a>
+                                            <input class="input100 border-start-0 form-control ms-0" placeholder="Password" type="password" name="password1" autocomplete="" required="" id="id_password1">
+                                        </div>
+                                        <div class="wrap-input100 validate-input input-group" id="Password-toggle">
+                                            <a href="javascript:void(0)" class="input-group-text bg-white text-muted">
+                                                <i class="zmdi zmdi-eye text-muted" aria-hidden="true"></i>
+                                            </a>
+                                            <input class="input100 border-start-0 form-control ms-0" placeholder="Password confirmation" type="password" name="password2" autocomplete="" required="" id="id_password2">
+                                        </div>
+                                        <label class="custom-control custom-checkbox mt-4">
+                                            <input required type="checkbox" class="custom-control-input">
+                                            <span class="custom-control-label">Agree the <a href="terms.html">terms and policy</a></span>
+                                        </label>
+                                        <div class="container-login100-form-btn">
+                                            {% comment %} <a href="index.html" class="login100-form-btn btn-primary">
+                                                    Login
+                                            </a> {% endcomment %}
+                                            <input class="login100-form-btn btn-primary" type="submit" value="Register">
+                                        </div>
+                                        <div class="text-center pt-3">
+                                            <p class="text-dark mb-0">Already have account ?<a href="{% url 'login' %}" class="text-primary ms-1">Sign In</a></p>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+            <!-- CONTAINER CLOSED -->
+        </div>
+    </div>
+    <!-- End PAGE -->
+
+</div>
+
+{% endblock %}
+{% block notifications %}   
+{% endblock %}

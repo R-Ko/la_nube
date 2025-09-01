@@ -1,0 +1,102 @@
+{% extends "base.html" %} 
+{% load static %} 
+{% block title_page %}
+{{title_page.capitalize }} 
+{% endblock %} 
+{% block breadcrumb %}
+
+<li class="breadcrumb-item">
+  <a href="">{{ title_page.capitalize }}</a>
+</li>
+{% endblock %} 
+{% block content %}
+<div class="row">
+    <div class="pricing-tabs">
+        <div class="pri-tabs-heading text-center">
+            <ul class="nav nav-price mt-5">
+                <li><a class="active show" data-bs-toggle="tab" href="#month">Monthly</a></li>
+                <li><a data-bs-toggle="tab" href="#annualyear">Annual</a></li>
+            </ul>
+        </div>
+        <div class="tab-content">
+            <div class="tab-pane pb-0" id="annualyear">
+                <div class="row d-flex align-items-center justify-content-center">
+                    <!-- COL-END -->
+                    <div class="col-sm-6 col-xl-3 col-md-6 col-lg-6">
+                        <div class="panel price panel-color bg-success-transparent" style="box-shadow: 0px 16px 32px rgba(33, 33, 33, 0.15);">
+                            <div class="pb-4 px-5 border-bottom">
+                                <h3 class="pb-2">Business <span class="badge bg-success ms-5 mb-1 mt-1 fs-12 text-end">Recommended</span></h3>
+                                <span>Get access to all Features. </span>
+                            </div>
+                            <div class="panel-body p-0 ps-5">
+                                <p class="lead py-0 text-success"><strong>$540 </strong></p>
+                            </div>
+                            <div class="panel-footer text-center px-5 border-0 pt-0">
+                                <button class="btn btn-lg btn-success btn-block btn-pill">
+                                    <span class="ms-4 me-4">Select</span>
+                                </button>
+                            </div>
+                            <ul class="list-group list-group-flush pb-5">
+                                <li class="list-group-item border-0"><i class="mdi mdi-circle-outline text-success p-2 fs-12"></i><strong> Sales management</strong></li>
+                                <li class="list-group-item border-0"><i class="mdi mdi-circle-outline text-success p-2 fs-12"></i><strong> Website creation</strong></li>
+                                <li class="list-group-item border-0"><i class="mdi mdi-circle-outline text-success p-2 fs-12"></i><strong> All panels</strong> statistics</li>
+                                <li class="list-group-item border-0"><i class="mdi mdi-circle-outline text-success p-2 fs-12"></i><strong> Emails & Phone </strong> support</li>
+                                <li class="list-group-item border-bottom-0"><i class="mdi mdi-circle-outline text-success p-2 fs-12"></i><strong> 24/7</strong> support</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane active show" id="month">
+                <div class="row d-flex align-items-center justify-content-center">
+                    <div class="col-sm-6 col-xl-3 col-md-6 col-lg-6">
+                        <div class="panel price panel-color" style="box-shadow: 0px 16px 32px rgba(33, 33, 33, 0.15);">
+                            <div class="pb-4 px-5 border-bottom">
+                                <h3 class="pb-2">Free</h3>
+                                <span>Try it Free, Get access to all Features for 30 days. No plan credit card required. </span>
+                            </div>
+                            <div class="panel-body p-0 ps-5">
+                                <p class="lead py-0 text-primary"><strong>$0 </strong></p>
+                            </div>
+                            <div class="panel-footer text-center px-5 border-0 pt-0">
+                                <button class="btn btn-lg btn-outline-primary btn-block btn-pill">
+                                    <span class="ms-4 me-4">Select</span>
+                                </button>
+                            </div>
+                            <ul class="list-group list-group-flush pb-5">
+                              <li class="list-group-item border-0"><i class="mdi mdi-circle-outline text-primary p-2 fs-12"></i><strong> Sales management</strong></li>
+                              <li class="list-group-item border-0"><i class="mdi mdi-circle-outline text-primary p-2 fs-12"></i><strong> 2 panels</strong> statistics</li>
+                              <li class="list-group-item border-0"><i class="mdi mdi-circle-outline text-primary p-2 fs-12"></i><strong> Emails </strong> support only</li>
+                          </ul>
+                        </div>
+                    </div>
+                    <!-- COL-END -->
+                    <div class="col-sm-6 col-xl-3 col-md-6 col-lg-6">
+                        <div class="panel price panel-color" style="box-shadow: 0px 16px 32px rgba(33, 33, 33, 0.15);">
+                            <div class="pb-4 px-5 border-bottom">
+                                <h3 class="pb-2">Business</h3>
+                                <span>Get access to all Features. </span>
+                            </div>
+                            <div class="panel-body p-0 ps-5">
+                                <p class="lead py-0 text-secondary"><strong>$55 </strong></p>
+                            </div>
+                            <div class="panel-footer text-center px-5 border-0 pt-0">
+                                <button class="btn btn-lg btn-secondary btn-block btn-pill">
+                                    <span class="ms-4 me-4">Select</span>
+                                </button>
+                            </div>
+                            <ul class="list-group list-group-flush pb-5">
+                                <li class="list-group-item border-0"><i class="mdi mdi-circle-outline text-secondary p-2 fs-12"></i><strong> Sales management</strong></li>
+                                <li class="list-group-item border-0"><i class="mdi mdi-circle-outline text-secondary p-2 fs-12"></i><strong> Website creation</strong></li>
+                                <li class="list-group-item border-0"><i class="mdi mdi-circle-outline text-secondary p-2 fs-12"></i><strong> All panels</strong> statistics</li>
+                                <li class="list-group-item border-0"><i class="mdi mdi-circle-outline text-secondary p-2 fs-12"></i><strong> Emails & Phone </strong> support</li>
+                                <li class="list-group-item border-bottom-0"><i class="mdi mdi-circle-outline text-secondary p-2 fs-12"></i><strong> 24/7</strong> support</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

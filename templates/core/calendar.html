@@ -1,0 +1,94 @@
+{% extends "base.html" %} 
+{% load static %} 
+{% block title_page %}
+{{title_page.capitalize }} 
+{% endblock %} 
+{% block breadcrumb %}
+
+<li class="breadcrumb-item">
+  <a href="">{{ title_page.capitalize }}</a>
+</li>
+{% endblock %} 
+{% block content %}
+<div class="col-lg-12 col-md-12">
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">{{ title_page.capitalize }}</h3>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="mb-2 col-4">
+            <div class="input-group">            
+              <div class="input-group-text">
+                  <i class="fa fa-calendar tx-16 lh-0 op-6"></i>
+              </div><input data-date-format="yyyy-mm-dd" data-provide="datepicker" onChange="fecha()" class="form-control fc-datepicker hasDatepicker" placeholder="Ir a..." type="text" id="date_custom">
+            </div>
+          </div>
+          <div id="calendar2"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} 
+
+{% block jsextra %}
+
+<script src="{% static 'plugins/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-daterangepicker/moment.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-datepicker/bootstrap-datepicker.js' %}"></script>
+
+<script src="{% static 'js/fullcalendar.min.js' %}"></script>
+
+<script> 
+  $(function () { 
+      $("#date_custom").datepicker({  
+          autoclose: true,  
+          todayHighlight: true, 
+      }).datepicker('update', new Date()); 
+  }); 
+</script> 
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var calendarEl = document.getElementById("calendar2");
+    calendar = new FullCalendar.Calendar(calendarEl, {
+      headerToolbar: {
+        left: "prev,next today",
+        center: "title",
+        right: "dayGridMonth,timeGridWeek,timeGridDay",
+      },
+      initialView: "dayGridMonth",
+      timeZone: "UTC",
+      businessHours: true,
+      nowIndicator: true,
+      now: "{% now 'Y-m-d\TH:i:s' %}",
+      eventSources: [
+        {
+          url: "{% url 'core:get_events' %}",
+          method: "GET",
+          /*extraParams: {
+            custom_param1: 'something',
+            custom_param2: 'somethingelse'
+          },*/
+          failure: function () {
+            alert("there was an error while fetching events!");
+          },
+          textColor: "black",
+        },
+      ],
+      eventClick: function (info) {
+        alert(info.event.title);
+      },
+    });
+    calendar.render();
+  });
+
+  function fecha(){
+    var date_custom = $('#date_custom').val()
+    calendar.gotoDate(date_custom);
+  }
+</script>
+
+{% endblock %}

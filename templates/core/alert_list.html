@@ -1,0 +1,142 @@
+{% extends "base.html" %} {% load static %} {% block title_page %}
+{{title_page.capitalize }} {% endblock %} {% block breadcrumb %}
+
+<li class="breadcrumb-item">
+  <a href="#">Alertas</a>
+</li>
+<li class="breadcrumb-item active" aria-current="page">
+  Listado de {{ title_page.capitalize }}
+</li>
+{% endblock %} {% block content %} {% comment %} Modal Image {% endcomment %}
+<div class="modal fade" id="modaldemo8">
+  <div
+    class="modal-dialog modal-xl modal-dialog-centered text-center"
+    role="document"
+  >
+    <div class="modal-content modal-content-demo">
+      <div class="modal-body">
+        <img id="image-modal" src="" alt="image" class="img-fluid" />
+      </div>
+    </div>
+  </div>
+</div>
+{% comment %} EndModal {% endcomment %}
+
+<div class="col-lg-12 col-md-12">
+  {% if messages %} {% for message in messages %}
+  <div class="alert alert-success" role="alert">
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-hidden="true"
+    >
+      ×
+    </button>
+    <i class="fa fa-check-circle-o me-2" aria-hidden="true"></i> {{ message }}
+  </div>
+  {% endfor %} {% endif %}
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">Listado de {{ title_page.capitalize }}</h3>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table
+          id="file-datatable"
+          class="table table-bordered text-nowrap key-buttons border-top"
+        >
+          <thead class="table-primary">
+            <tr class="align-middle text-center">
+              <th class="border-bottom-0">Título</th>
+              <th class="border-bottom-0">Contenido</th>
+              <th class="border-bottom-0">Fecha a publicar</th>
+              <th class="border-bottom-0">Activa</th>
+              <th class="border-bottom-0">Creada</th>
+              <th class="border-bottom-0">Por</th>
+              <th class="border-bottom-0"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for alert in alert_list %}
+            <tr class="align-middle text-center">
+              <td class="align-middle">{{ alert.title|default:"" }}</td>
+              <td class="align-middle">{{ alert.content|default:"" }}</td>
+              <td class="align-middle">{{ alert.publish|date:"d-m-Y" }}</td>
+              <td class="align-middle">
+                {% if alert.active %}
+                <span class="badge bg-success badge-sm me-1 mb-1 mt-1"
+                  ><i class="fa fa-check"></i
+                ></span>
+                {% else %}
+                <span class="badge bg-danger badge-sm me-1 mb-1 mt-1"
+                  ><i class="fa fa-close"></i
+                ></span>
+                {% endif %}
+              </td>
+              <td class="align-middle">{{ alert.created|date:"d-m-Y" }}</td>
+              <td class="align-middle">{{ alert.user|default:"" }}</td>
+              <td class="align-middle">
+                <form
+                  action="{% url 'core:alert-delete' alert.id %}"
+                  method="post"
+                  enctype="multipart/form-data"
+                >{% if "Supervisor" == user.groups.all.0.name or user.is_staff %}
+                  <a
+                    id="bDetails"
+                    href="{% url 'core:alert-edit' alert.id %}"
+                    class="btn btn-sm btn-primary"
+                  >
+                    <span class="fe fe-edit"> </span>
+                  </a>
+
+                  {% csrf_token %}
+                  <button
+                    onclick="return confirm('¿Estás seguro de eliminar el registro?')"
+                    type="submit"
+                    class="btn btn-sm btn-danger"
+                  >
+                    <span class="fe fe-trash-2"> </span>
+                  </button>
+                  {% endif %}
+                </form>
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="200">No hay registros.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block jsextra %}
+
+<script src="{% static 'plugins/bootstrap5-typehead/autocomplete.js' %}"></script>
+<script src="{% static 'js/typehead.js' %}"></script>
+
+<script src="{% static 'plugins/datatable/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/dataTables.bootstrap5.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/buttons.bootstrap5.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/jszip.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/pdfmake/pdfmake.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/pdfmake/vfs_fonts.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/buttons.html5.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/buttons.print.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/buttons.colVis.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/responsive.bootstrap5.min.js' %}"></script>
+<script src="{% static 'js/table-data.js' %}"></script>
+
+<script>
+  function setSRC(imgSrc) {
+    $("#image-modal").attr("src", imgSrc);
+  }
+  $(document).ready(function () {});
+</script>
+
+{% endblock %}

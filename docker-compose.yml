@@ -1,0 +1,27 @@
+version: '3.9'
+
+services:
+  web:
+    build:
+      context: /home/odoodocker/la_nube  # Ruta absoluta a tu proyecto
+      dockerfile: Dockerfile
+    image: django-la-nube:0.1 # Tag personalizado
+    #user: root
+    networks:
+      - django_network
+    command: python manage.py runserver 0.0.0.0:8100
+    volumes:
+      - /home/odoodocker/la_nube:/code  # Monta tu código en el contenedor
+      - /home/odoodocker/la_nube/mydatabase.sqlite:/code/mydatabase.sqlite  # Persistencia SQLite
+      - ./backups:/home/backups
+    expose:
+      - "8100/tcp"
+    environment:
+      - DJANGO_SETTINGS_MODULE=lanube.settings  # Ajusta si la estructura es diferente
+    #restart: unless-stopped
+    restart: always       # run as service
+
+networks:
+  django_network:
+    name: ${NETWORK_NAME}
+    driver: bridge                       

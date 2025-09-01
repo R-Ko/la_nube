@@ -1,0 +1,200 @@
+{% extends "base.html" %} {% load static %} {% block title_page %}
+{{title_page.capitalize }} {% endblock %} {% block breadcrumb %}
+
+<li class="breadcrumb-item">
+  <a href="">{{ title_page.capitalize }}</a>
+</li>
+<li class="breadcrumb-item active" aria-current="page">
+  Details {{ title_page.capitalize }}
+</li>
+{% endblock %} {% block content %} {% comment %} Modal Image {% endcomment %}
+<div class="modal fade" id="modaldemo8">
+  <div
+    class="modal-dialog modal-xl modal-dialog-centered text-center"
+    role="document"
+  >
+    <div class="modal-content modal-content-demo">
+      <div class="modal-body">
+        <img
+          src="{{MEDIA_URL}}{{ownership.image.url}}"
+          alt="image"
+          class="img-fluid"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+{% comment %} EndModal {% endcomment %}
+
+<div class="row">
+  <div class="col-lg-3 col-md-3">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Image</h3>
+      </div>
+      <div class="card-body">
+        <a
+          data-bs-effect="effect-flip-horizontal"
+          data-bs-toggle="modal"
+          href="#modaldemo8"
+          class="thumbnail"
+        >
+          <img
+            src="{{MEDIA_URL}}{{ownership.image.url}}"
+            alt="thumb1"
+            class="thumbimg"
+          />
+        </a>
+      </div>
+    </div>
+    <a
+      id="bDetails"
+      href="{% url 'core:ownership-edit' ownership.id %}"
+      class="btn btn-md btn-primary"
+    >
+      <span class="fe fe-edit"> </span> Edit
+    </a>
+    <a
+      onClick="setOwnershipId('{{ ownership.name }}')"
+      id="bDetails"
+      href="{% url 'core:booking-add' %}"
+      class="btn btn-md btn-warning"
+    >
+      <span class="fa fa-money"> </span> Booking
+    </a>
+  </div>
+  <div class="col-lg-9 col-md-9">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Information</h3>
+      </div>
+      <div class="card-body">
+        <div class="panel panel-primary">
+          <div class="tab-menu-heading">
+            <div class="tabs-menu">
+              <!-- Tabs -->
+              <ul class="nav panel-tabs">
+                <li>
+                  <a href="#tab1" class="active" data-bs-toggle="tab"
+                    >Details</a
+                  >
+                </li>
+                <li><a href="#tab2" data-bs-toggle="tab">Summary</a></li>
+                <li><a href="#tab3" data-bs-toggle="tab">Features</a></li>
+                <li><a href="#tab4" data-bs-toggle="tab">Equipment</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="panel-body tabs-menu-body">
+            <div class="tab-content">
+              <div class="tab-pane active" id="tab1">
+                <dl class="row">
+                  <dt class="col-sm-2">Name</dt>
+                  <dd class="col-sm-10">{{ownership.name}}</dd>
+                  <dt class="col-sm-2">Model</dt>
+                  <dd class="col-sm-10">{{ownership.model}}</dd>
+                  <dt class="col-sm-2">Shipbuilder</dt>
+                  <dd class="col-sm-10">{{ownership.shipbuilder}}</dd>
+                  <dt class="col-sm-2">Localization</dt>
+                  <dd class="col-sm-10">{{ownership.localization}}</dd>
+                  <dt class="col-sm-2">Type</dt>
+                  <dd class="col-sm-10">{{ownership.type_ship}}</dd>
+                  <dt class="col-sm-2">Category</dt>
+                  <dd class="col-sm-10">{{ownership.category_ship}}</dd>
+                </dl>
+              </div>
+              <div class="tab-pane" id="tab2">
+                <dl class="row">
+                  <dt class="col-sm-2">PDF Sheet</dt>
+                  <dd class="col-sm-10">
+                    <a
+                      target="_blanck"
+                      href="{{MEDIA_URL}}{{ownership.pdf_sheet.url}}"
+                      >Descargar</a
+                    >
+                  </dd>
+                  <dt class="col-sm-2">Summary</dt>
+                  <dd class="col-sm-10">{{ownership.summary}}</dd>
+                  <dt class="col-sm-2">Description</dt>
+                  <dd class="col-sm-10">{{ownership.description}}</dd>
+                  <dt class="col-sm-2">Description toys</dt>
+                  <dd class="col-sm-10">{{ownership.description_toys}}</dd>
+                </dl>
+              </div>
+              <div class="tab-pane" id="tab3">
+                <dl class="row">
+                  <dt class="col-sm-2">Length</dt>
+                  <dd class="col-sm-10">{{ownership.length}}</dd>
+                  <dt class="col-sm-2">Beam</dt>
+                  <dd class="col-sm-10">{{ownership.beam}}</dd>
+                  <dt class="col-sm-2">Draft</dt>
+                  <dd class="col-sm-10">{{ownership.draft}}</dd>
+                  <dt class="col-sm-2">Rooms Double</dt>
+                  <dd class="col-sm-10">{{ownership.rooms_double}}</dd>
+                  <dt class="col-sm-2">Rooms Single</dt>
+                  <dd class="col-sm-10">{{ownership.rooms_single}}</dd>
+                  <dt class="col-sm-2">Bathrooms</dt>
+                  <dd class="col-sm-10">{{ownership.bathrooms}}</dd>
+                  <dt class="col-sm-2">Power Motor</dt>
+                  <dd class="col-sm-10">{{ownership.power_motor}}</dd>
+                  <dt class="col-sm-2">Qt Motor</dt>
+                  <dd class="col-sm-10">{{ownership.qt_motor}}</dd>
+                  <dt class="col-sm-2">Model Motor</dt>
+                  <dd class="col-sm-10">{{ownership.model_motor}}</dd>
+                  <dt class="col-sm-2">Qt Tank</dt>
+                  <dd class="col-sm-10">{{ownership.qt_tank}}</dd>
+                  <dt class="col-sm-2">Oil Type</dt>
+                  <dd class="col-sm-10">{{ownership.oil_type}}</dd>
+                </dl>
+              </div>
+              <div class="tab-pane" id="tab4">
+                <dl class="row">
+                  <dt class="col-sm-2">Inside Basic</dt>
+                  <dd class="col-sm-10">{{ ownership.inside_basic }}</dd>
+                  <dt class="col-sm-2">Inside Premium</dt>
+                  <dd class="col-sm-10">{{ownership.inside_premium}}</dd>
+                  <dt class="col-sm-2">Outside Basic</dt>
+                  <dd class="col-sm-10">{{ ownership.outside_basic }}</dd>
+                  <dt class="col-sm-2">Outside Premium</dt>
+                  <dd class="col-sm-10">{{ownership.outside_premium}}</dd>
+                  <dt class="col-sm-2">Navigation Basic</dt>
+                  <dd class="col-sm-10">{{ ownership.navigation_basic }}</dd>
+                  <dt class="col-sm-2">Navigation Premium</dt>
+                  <dd class="col-sm-10">{{ownership.navigation_premium}}</dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block jsextra %}
+
+<script src="{% static 'plugins/bootstrap5-typehead/autocomplete.js' %}"></script>
+<script src="{% static 'js/typehead.js' %}"></script>
+
+<script src="{% static 'plugins/datatable/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/dataTables.bootstrap5.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/buttons.bootstrap5.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/jszip.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/pdfmake/pdfmake.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/pdfmake/vfs_fonts.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/buttons.html5.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/buttons.print.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/buttons.colVis.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/responsive.bootstrap5.min.js' %}"></script>
+<script src="{% static 'js/table-data.js' %}"></script>
+
+<script>
+  $(document).ready(function () {});
+
+  function setOwnershipId(ownershipId) {
+    localStorage.setItem('ownershipId', ownershipId);
+  }
+</script>
+
+{% endblock %}

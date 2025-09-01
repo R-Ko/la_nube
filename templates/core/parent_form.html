@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title_page %}
+{{ title_page.capitalize }}
+{% endblock %}
+
+{% block breadcrumb %}
+
+    <li class="breadcrumb-item ">
+        <a href="">{{ title_page.capitalize }}</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">
+        {% if not object %}
+            Crear
+        {% else %}
+            Edit
+        {% endif %}
+        {{ title_page.capitalize }}
+    </li>
+{% endblock %}
+
+{% block content %}
+<div class="col-lg-12 col-md-12">
+    {% if form.errors %}
+    {% for key, value in form.errors.items %}                        
+        <div class="alert alert-danger" role="alert">
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-hidden="true">×</button>
+            {{value}}
+        </div>
+    {% endfor %} 
+    {% endif %}
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">{% if not object %}Agregar{% else %}Editar{% endif %} {{ titulo_page.capitalize }}</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <form class="row" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% if user.is_staff  %}
+                    <div class="row">
+                        <div class="col-sm-4 col-md-4">
+                            <div class="form-group">                       
+                                <label class="form-label">Niño/a <span class="text-red">*</span></label>
+                                <select required data-placeholder="Selecciona uno..." id="id_child" name="child" class="select2 form-control select2-show-search form-select">
+                                    {% if not object or not child %}
+                                        <option selected value="">Selecciona uno...</option> 
+                                    {% endif %}
+                                    {% for item in childs %}
+                                        <option {% if item.id == child.id %}selected{% endif %} value="{{item.id}}">{{item}}</option>
+                                    {% endfor %} 
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% comment %} {% include 'form_snippet.html' %} {% endcomment %}
+                    {% comment %} {{form.as_p}} {% endcomment %}
+                    <div class="col-sm-6 col-md-6 col-xl-6">
+                        <div class="form-group">
+                            <label class="form-label">Nombre <span class="text-red">*</span></label>
+                            <input required id="id_first_name" name="first_name" value="{{ first_name|default:'' }}" type="text" class="form-control" placeholder="Nombre">
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-xl-6">
+                        <div class="form-group">
+                            <label class="form-label">Apellidos <span class="text-red">*</span></label>
+                            <input required id="id_last_name" name="last_name" value="{{ last_name|default:'' }}" type="text" class="form-control" placeholder="Apellidos">
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-md-4">
+                        <div class="form-group">
+                            <label class="form-label">NIP <span class="text-red">*</span></label>
+                            <input required id="id_nip" name="nip" type="text" value="{{ form.nip.value|default:'' }}" class="form-control" placeholder="NIP">
+                        </div>
+                    </div>
+                    <!-- <div class="col-sm-4 col-md-4">
+                        <div class="form-group">
+                            <label class="form-label">Fecha de nacimiento <span class="text-red">*</span></label>
+                            <input required id="id_date_birth" name="date_birth" value="{{ form.date_birth.value|date:"Y-m-d" }}" type="date" class="form-control" placeholder="Fecha de nacimiento">
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-md-4">
+                        <div class="form-group">
+                            <label class="form-label">Género <span class="text-red">*</span></label>
+                            <select required data-placeholder="Select one or more..." id="id_sex" name="sex" class="select2 form-control">     
+                                <option value="F" {% if form.sex.value == "Femenino" %}selected{% endif %}>Femenino</option>
+                                <option value="M" {% if form.sex.value == "Masculino" %}selected{% endif %}>Masculino</option>
+                            </select>
+                        </div>
+                    </div> -->
+                    <div class="col-sm-6 col-md-9">
+                        <div class="form-group">
+                            <label class="form-label">Dirección <span class="text-red">*</span></label>
+                            <input required id="id_address" name="address" value="{{ form.address.value|default:'' }}" type="text" class="form-control" placeholder="Dirección">
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col-md-3">
+                        <div class="form-group">
+                            <label class="form-label">Teléfono <span class="text-red">*</span></label>
+                            <input required id="id_phone" name="phone" type="text" value="{{ form.phone.value|default:'' }}" class="form-control" placeholder="Teléfono">
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6">
+                        <div class="form-group">    
+                            <label class="form-label">Pregunta de seguridad <span class="text-red">*</span></label>
+                            {{ form.security_question }}
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Respuesta de seguridad <span class="text-red">*</span></label>
+                            {{ form.security_answer }}
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-md-4">
+                        <div class="form-group">
+                            <label class="form-label">Enfermedades que padece</label>
+                            <textarea id="id_illnesses" name="illnesses" class="form-control" placeholder="Enfermedades que padece">{{ form.illnesses.value|default:'' }}</textarea>
+                        </div>
+                    </div>
+                    <div class="col-sm-8 col-md-8">
+                        <label class="form-label custom-control custom-checkbox">
+                            <input {% if form.alcoholism.value %}checked{% endif %} type="checkbox" class="custom-control-input" id="id_alcoholism" name="alcoholism">
+                            <span class="custom-control-label">Alcoholismo</span>
+                        </label>
+                        <label class="form-label custom-control custom-checkbox">
+                            <input {% if form.smoking.value %}checked{% endif %} type="checkbox" class="custom-control-input" id="id_smoking" name="smoking">
+                            <span class="custom-control-label">Tabaquismo</span>
+                        </label>
+                        <div id="box-life" class="col-sm-8 col-md-8">
+                            <label class="form-label custom-control custom-checkbox">
+                                <input {% if form.life.value %}checked{% endif %} type="checkbox" class="custom-control-input" id="id_life" name="life">
+                                <span class="custom-control-label">¿Vive con el niño?</span>
+                            </label>
+                        </div>
+                    </div>
+                        <label class="form-label custom-control custom-checkbox">
+                            <input {% if form.is_mother.value %}checked{% endif %} type="checkbox" class="custom-control-input" id="id_mother" name="mother">
+                            <span class="custom-control-label">¿Mamá?</span>
+                        </label>
+                    </div>
+                    <div class="col-sm-4 col-md-4">
+                        <button type="submit" class="btn btn-success waves-effect waves-light m-r-10">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block jsextra %}
+
+    
+    <script src="{% static 'plugins/bootstrap5-typehead/autocomplete.js' %}"></script>
+    <script src="{% static 'js/typehead.js' %}"></script>
+    <script src="{% static 'plugins/formwizard/jquery.smartWizard.js' %}"></script>
+    <script src="{% static 'plugins/formwizard/fromwizard.js' %}"></script>
+    <script src="{% static 'plugins/jquery-steps/jquery.steps.min.js' %}"></script>
+    <script src="{% static 'plugins/parsleyjs/parsley.min.js' %}"></script>
+    <script src="{% static 'js/form-wizard.js' %}"></script>
+
+
+    <script src="{% static 'plugins/select2/select2.full.min.js' %}"></script>
+    <script src="{% static 'js/select2.js' %}"></script>
+    <script src="{% static 'js/form-validation.js' %}"></script>
+
+    <script src="{% static 'js/formelementadvnced' %}"></script>
+    <script src="{% static 'js/form-elements.js' %}"></script>
+
+
+    <script src="{% static 'plugins/fileuploads/js/fileupload.js' %}"></script>
+    <script src="{% static 'plugins/fileuploads/js/file-upload.js' %}"></script>
+    <script src="{% static 'plugins/fancyuploder/jquery.ui.widget.js' %}"></script>
+    <script src="{% static 'plugins/fancyuploder/jquery.fileupload.js' %}"></script>
+    <script src="{% static 'plugins/fancyuploder/jquery.iframe-transport.js' %}"></script>
+    <script src="{% static 'plugins/fancyuploder/jquery.fancy-fileupload.js' %}"></script>
+    <script src="{% static 'plugins/fancyuploder/fancy-uploader.js' %}"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#two').removeClass("active");
+            $('#one').addClass("active");
+        });
+    </script>
+
+{% endblock %}
