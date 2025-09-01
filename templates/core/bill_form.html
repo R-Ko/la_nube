@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title_page %}
+{{ title_page.capitalize }}
+{% endblock %}
+
+{% block breadcrumb %}
+
+    <li class="breadcrumb-item ">
+        <a href="">{{ title_page.capitalize }}</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">
+        {% if not object %}
+            Crear
+        {% else %}
+            Editar
+        {% endif %}
+        {{ title_page.capitalize }}
+    </li>
+{% endblock %}
+
+{% block content %}
+<div class="col-lg-12 col-md-12">
+    {% if form.errors %}
+    {% for key, value in form.errors.items %}                        
+        <div class="alert alert-danger" role="alert">
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-hidden="true">×</button>
+            {{value}}
+        </div>
+    {% endfor %} 
+    {% endif %}
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">{% if not object %}Agregar{% else %}Editar{% endif %} {{ titulo_page.capitalize }}</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <form class="row" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% comment %} {% include 'form_snippet.html' %} {% endcomment %}
+                    {% comment %} {{form.as_p}} {% endcomment %}
+                    <div class="col-sm-3 col-md-3">
+                        <div class="form-group">
+                            <label class="form-label">Niño/a: <span class="text-red">*</span></label>
+                            <select data-placeholder="Select one or more..." id="id_paid" name="paid" class="select2 form-control select2-show-search form-select">
+                                {% for child in childs %}
+                                    <option value="{{child.id}}" {% if form.paid.value == child.id %}selected{% endif %}>{{child}}</option>
+                                {% empty %}
+                                    <option value="" >Seleccione uno...</option>
+                                {% endfor %}                                
+                            </select>
+                        </div>
+                    </div>  
+                    <div class="col-sm-3 col-md-3">
+                        <div class="form-group">
+                            <label class="form-label">Monto</label>
+                            <input id="id_amount" name="amount" type="number" class="form-control" value="{{ form.amount.value|default:'' }}" placeholder="Monto">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Forma de Pago</label>
+                            <select data-placeholder="Select one or more..." id="id_currency" name="currency" class="select2 form-control select2-show-search form-select">
+                                <option {% if form.currency.value == "USD" %}selected{% endif %} value="USD" >USD</option>
+                                <option {% if form.currency.value == "MLC" %}selected{% endif %} value="MLC" >MLC</option>
+                                <option {% if form.currency.value == "Euro" %}selected{% endif %} value="Euro" >Euro</option>
+                                <option {% if form.currency.value == "USA Zelle" %}selected{% endif %} value="USA Zelle" >USA Zelle</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-xl-3">
+                        <div class="form-group">
+                            <label class="form-label">Fecha: <span class="text-red">*</span></label>
+                            <input required id="id_date" name="date" value="{{ form.date.value|date:"Y-m-d" }}" type="date" class="form-control" placeholder="Apellidos">
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col-md-3">
+                        <div class="form-group">
+                            <label class="form-label">Mes: <span class="text-red">*</span></label>
+                            <select data-placeholder="Select one or more..." id="id_month" name="month" class="select2 form-control">
+                                {% for option in form.month.field.choices %}                                
+                                <option value="{{option.1}}" {% if form.month.value == option.1 %}selected{% endif %}>{{option.1}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Año: <span class="text-red">*</span></label>
+                            <select id="id_year" name="year" class="select2 form-control">
+                                {% for option in form.year.field.choices %}
+                                <option value="{{ option.0 }}" {% if form.year.value|stringformat:"s" == option.0|stringformat:"s" %}selected{% endif %}>{{ option.1 }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>  
+                    </div>
+                    <hr>
+                    <div class="col-sm-4 col-md-4">
+                        <button type="submit" class="btn btn-success waves-effect waves-light m-r-10">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block jsextra %}
+
+    
+    <script src="{% static 'plugins/bootstrap5-typehead/autocomplete.js' %}"></script>
+    <script src="{% static 'js/typehead.js' %}"></script>
+    <script src="{% static 'plugins/formwizard/jquery.smartWizard.js' %}"></script>
+    <script src="{% static 'plugins/formwizard/fromwizard.js' %}"></script>
+    <script src="{% static 'plugins/jquery-steps/jquery.steps.min.js' %}"></script>
+    <script src="{% static 'plugins/parsleyjs/parsley.min.js' %}"></script>
+    <script src="{% static 'js/form-wizard.js' %}"></script>
+
+
+    <script src="{% static 'plugins/select2/select2.full.min.js' %}"></script>
+    <script src="{% static 'js/select2.js' %}"></script>
+    <script src="{% static 'js/form-validation.js' %}"></script>
+
+    <script src="{% static 'js/formelementadvnced' %}"></script>
+    <script src="{% static 'js/form-elements.js' %}"></script>
+
+
+    <script src="{% static 'plugins/fileuploads/js/fileupload.js' %}"></script>
+    <script src="{% static 'plugins/fileuploads/js/file-upload.js' %}"></script>
+    <script src="{% static 'plugins/fancyuploder/jquery.ui.widget.js' %}"></script>
+    <script src="{% static 'plugins/fancyuploder/jquery.fileupload.js' %}"></script>
+    <script src="{% static 'plugins/fancyuploder/jquery.iframe-transport.js' %}"></script>
+    <script src="{% static 'plugins/fancyuploder/jquery.fancy-fileupload.js' %}"></script>
+    <script src="{% static 'plugins/fancyuploder/fancy-uploader.js' %}"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#two').removeClass("active");
+            $('#one').addClass("active");
+        });
+    </script>
+
+{% endblock %}

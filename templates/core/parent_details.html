@@ -1,0 +1,156 @@
+{% extends "base.html" %} {% load static %} 
+{% block title_page%}{{title_page.capitalize }}{% endblock %} {% block breadcrumb %}
+
+<li class="breadcrumb-item">
+  <a href="{% url 'core:parent-list' %}">Padres</a>
+</li>
+<li class="breadcrumb-item active" aria-current="page">
+  {{ title_page.capitalize }}
+</li>
+{% endblock %} {% block content %}
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card mb-4">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-3">
+            <p class="mb-0">Nombre completo</p>
+          </div>
+          <div class="col-sm-9">
+            <p class="text-muted mb-0">
+              {{object.first_name|default:''}} {{object.last_name|default:''}}
+            </p>
+          </div>
+        </div>
+        <hr />
+        <div class="row">
+          <div class="col-sm-3">
+            <p class="mb-0">NIP</p>
+          </div>
+          <div class="col-sm-9">
+            <p class="text-muted mb-0">{{object.nip|default:''}}</p>
+          </div>
+        </div>
+        <hr />
+        <div class="row">
+          <div class="col-sm-3">
+            <p class="mb-0">Teléfono</p>
+          </div>
+          <div class="col-sm-9">
+            <p class="text-muted mb-0">{{object.phone|default:''}}</p>
+          </div>
+        </div>
+        <hr />
+        <div class="row">
+          <div class="col-sm-3">
+            <p class="mb-0">Dirección</p>
+          </div>
+          <div class="col-sm-9">
+            <p class="text-muted mb-0">{{object.address|default:''}}</p>
+          </div>
+        </div>
+        <hr />
+        
+        <!-- <div class="row">
+          <div class="col-sm-3">
+            <p class="mb-0">Fecha de nacimiento</p>
+          </div>
+          <div class="col-sm-9">
+            <p class="text-muted mb-0">{{object.date_birth|default:''}}</p>
+          </div>
+        </div> -->
+        <div class="row">
+          <div class="col-sm-3">
+            <p class="mb-0">Enfermedades que padece</p>
+          </div>
+          <div class="col-sm-9">
+            <p class="text-muted mb-0">{{object.illnesses|default:''}}</p>
+          </div>
+        </div>
+        <hr />
+        <div class="row">
+          <div class="col-sm-3">
+            <p class="mb-0">Alcoholismo</p>
+          </div>
+          <div class="col-sm-9">
+            {% if object.alcoholism %}
+            <span class="badge bg-success badge-sm me-1 mb-1 mt-1"
+              ><i class="fa fa-check"></i
+            ></span>
+            {% else %}
+            <span class="badge bg-danger badge-sm me-1 mb-1 mt-1"
+              ><i class="fa fa-close"></i
+            ></span>
+            {% endif %}
+          </div>
+        </div>
+        <hr />
+        <div class="row">
+          <div class="col-sm-3">
+            <p class="mb-0">Tabaquismo</p>
+          </div>
+          <div class="col-sm-9">
+            {% if object.smoking %}
+            <span class="badge bg-success badge-sm me-1 mb-1 mt-1"
+              ><i class="fa fa-check"></i
+            ></span>
+            {% else %}
+            <span class="badge bg-danger badge-sm me-1 mb-1 mt-1"
+              ><i class="fa fa-close"></i
+            ></span>
+            {% endif %}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-3">
+            <p class="mb-0">Vive con el niño</p>
+          </div>
+          <div class="col-sm-9">
+            {% if object.life %}
+            <span class="badge bg-success badge-sm me-1 mb-1 mt-1"
+              ><i class="fa fa-check"></i
+            ></span>
+            {% else %}
+            <span class="badge bg-danger badge-sm me-1 mb-1 mt-1"
+              ><i class="fa fa-close"></i
+            ></span>
+            {% endif %}
+          </div>
+        </div>
+        <hr />
+        <a
+          href="{% url 'core:parent-edit' object.pk %}"
+          data-mdb-button-init=""
+          data-mdb-ripple-init=""
+          class="btn btn-primary"
+          data-mdb-button-initialized="true"
+          >Editar</a
+        >
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block jsextra %}
+
+<script src="{% static 'plugins/bootstrap5-typehead/autocomplete.js' %}"></script>
+<script src="{% static 'js/typehead.js' %}"></script>
+
+<script src="{% static 'plugins/datatable/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/dataTables.bootstrap5.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/buttons.bootstrap5.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/jszip.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/pdfmake/pdfmake.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/pdfmake/vfs_fonts.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/buttons.html5.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/buttons.print.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/buttons.colVis.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/responsive.bootstrap5.min.js' %}"></script>
+<script src="{% static 'js/table-data.js' %}"></script>
+
+<script>
+  $(document).ready(function () {});
+</script>
+
+{% endblock %}

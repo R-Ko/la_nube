@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title_page %}
+{{ title_page }}
+{% endblock %}
+
+{% block breadcrumb %}
+
+    <li class="breadcrumb-item active" aria-current="page">        
+        {{ title_page }}
+    </li>
+{% endblock %}
+
+{% block content %}
+<div class="col-lg-12 col-md-12">
+    {% if form.errors %}
+    {% for key, value in form.errors.items %}                        
+        <div class="alert alert-danger" role="alert">
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-hidden="true">×</button>
+            {{value}}
+        </div>
+    {% endfor %} 
+    {% endif %}
+        <div class="card">
+            <div class="card-body">
+                <p><h5>1. Introducción</h5>
+
+                    La guardería La Nube tiene como objetivo proporcionar cuidado integral, educación inicial y un ambiente seguro para los niños inscritos.
+                    Al inscribir a su hijo/a, usted acepta los términos y condiciones detallados en este documento.
+                    <hr>
+                    <h5>2. Inscripción y matrícula</h5>
+                   
+                    La inscripción está sujeta a la disponibilidad de cupos y la entrega completa de los documentos requeridos: formulario de inscripción, copia del certificado de nacimiento, y constancia médica actualizada.
+                    Se debe pagar una cuota de inscripción no reembolsable al momento de asegurar la plaza.
+                    La matrícula mensual deberá ser pagada dentro de los primeros 5 días de cada mes. Los pagos atrasados podrán estar sujetos a recargos.
+                    <hr>
+                    <h5>3. Horarios y asistencia</h5>
+                   
+                    El horario de la guardería es de lunes a viernes, de 7:00 a.m. a 6:00 p.m.
+                    Los padres/tutores deberán recoger a los niños puntualmente. En caso de retraso, se aplicará un cargo adicional por cada 15 minutos.
+                    La asistencia es obligatoria. Cualquier ausencia deberá ser notificada con antelación. No se realizarán descuentos por días no asistidos.
+                    <hr>
+                    <h5>4. Alimentación y necesidades especiales</h5>
+                   
+                    La Nube proporciona alimentación balanceada según un menú semanal aprobado por especialistas.
+                    Si su hijo/a tiene alergias o restricciones alimentarias, deberá notificarlo por escrito al momento de la inscripción.
+                    Los padres pueden enviar alimentos adicionales si se considera necesario, siempre que sean saludables.
+                    <hr>
+                    <h5>5. Salud y seguridad</h5>
+                   
+                    Los niños deberán asistir en buen estado de salud. Si se detectan síntomas de enfermedad, se notificará a los padres para que lo recojan de inmediato.
+                    En caso de emergencia médica, la guardería tomará medidas inmediatas y notificará a los padres. Los gastos derivados serán responsabilidad del tutor.
+                    No se permite el ingreso de objetos peligrosos, medicamentos o juguetes sin la autorización previa de la administración.
+                    <hr>
+                    <h5>6. Conducta y disciplina</h5> 
+                   
+                    La guardería promueve un ambiente basado en el respeto y el desarrollo emocional positivo.
+                    Se utilizarán estrategias de disciplina constructiva, evitando cualquier forma de castigo físico o psicológico.
+                    Cualquier comportamiento disruptivo o que afecte el bienestar de los demás será comunicado a los padres para encontrar soluciones conjuntas.
+                    <hr>
+                    <h5>7. Cancelación y reembolsos</h5>
+                   
+                    Si decide retirar a su hijo/a, deberá notificarlo con al menos 15 días de anticipación.
+                    La cuota de inscripción no es reembolsable. Cualquier pago adelantado será evaluado para determinar la elegibilidad de un reembolso parcial.
+                    <hr>
+                    <h5>8. Derechos de imagen</h5>
+                   
+                    Durante las actividades, es posible que se tomen fotos o videos de los niños para uso interno o promocional de la guardería. Si no está de acuerdo, deberá notificarlo por escrito.
+                    <hr>
+                    <h5>9. Modificaciones a los términos y condiciones</h5>
+                    La Nube se reserva el derecho de actualizar estos términos y condiciones. Cualquier cambio será comunicado a los padres con antelación.
+                    <hr>
+                    <h5>10. Contacto</h5>
+                   Para cualquier consulta o aclaración, puede comunicarse con nosotros a través de:
+                   
+                    Teléfono: +53 5160958 / +53 54002886
+                    Dirección: 7ma Esquina 42, Playa. La Habana. Cuba</p>
+                
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body text-start">
+                <div class="terms">
+                    <p>Debe aceptar los términos y condiciones antes de continuar.</p>
+                    <form method="post" action="{% url 'core:set_status_terms' %}">
+                        {% csrf_token %}
+                        <input type="hidden" value="accept" name="terms_status" id="terms_status">
+                        <button type="submit" class="btn btn-primary text-white">Aceptar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+</div>
+{% endblock %}
+
+{% block jsextra %}
+
+    
+    <script src="{% static 'plugins/bootstrap5-typehead/autocomplete.js' %}"></script>
+    <script src="{% static 'js/typehead.js' %}"></script>
+    <script src="{% static 'plugins/formwizard/jquery.smartWizard.js' %}"></script>
+    <script src="{% static 'plugins/formwizard/fromwizard.js' %}"></script>
+    <script src="{% static 'plugins/jquery-steps/jquery.steps.min.js' %}"></script>
+    <script src="{% static 'plugins/parsleyjs/parsley.min.js' %}"></script>
+    <script src="{% static 'js/form-wizard.js' %}"></script>
+
+
+    <script src="{% static 'plugins/select2/select2.full.min.js' %}"></script>
+    <script src="{% static 'js/select2.js' %}"></script>
+    <script src="{% static 'js/form-validation.js' %}"></script>
+
+    <script src="{% static 'js/formelementadvnced' %}"></script>
+    <script src="{% static 'js/form-elements.js' %}"></script>
+
+
+    <script src="{% static 'plugins/fileuploads/js/fileupload.js' %}"></script>
+    <script src="{% static 'plugins/fileuploads/js/file-upload.js' %}"></script>
+    <script src="{% static 'plugins/fancyuploder/jquery.ui.widget.js' %}"></script>
+    <script src="{% static 'plugins/fancyuploder/jquery.fileupload.js' %}"></script>
+    <script src="{% static 'plugins/fancyuploder/jquery.iframe-transport.js' %}"></script>
+    <script src="{% static 'plugins/fancyuploder/jquery.fancy-fileupload.js' %}"></script>
+    <script src="{% static 'plugins/fancyuploder/fancy-uploader.js' %}"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#two').removeClass("active");
+            $('#one').addClass("active");
+        });
+    </script>
+
+{% endblock %}

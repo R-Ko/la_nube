@@ -1,0 +1,39 @@
+{% extends "base.html" %} {% load static %} {% block title_page %}
+{{title_page.capitalize }} {% endblock %} {% block breadcrumb %}
+
+<li class="breadcrumb-item">
+  <a href="/catalogo/municipio/?query=1">{{ title_page.capitalize }}</a>
+</li>
+<li class="breadcrumb-item active" aria-current="page">
+  Delete {{title_page.capitalize }}
+</li>
+{% endblock %} {% block content %}
+<div class="col-lg-12 col-md-12">
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">Delete {{ title_page.capitalize }}</h3>
+    </div>
+    <div class="card-body">
+      <form
+        class="needs-validation"
+        method="post"
+        enctype="multipart/form-data"
+      >
+        {% csrf_token %}
+        <p>
+          The <strong>{{ object.name }}</strong> ownership record will be removed from the database permanently. Are you sure you want to perform this action?
+        </p>
+        <a href="{% url 'core:ownership-list' %}" class="btn btn-success"
+          >Cancelar</a
+        >
+        <button
+          type="submit"
+          class="btn btn-danger waves-effect waves-light m-r-10"
+        >
+          Eliminar
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

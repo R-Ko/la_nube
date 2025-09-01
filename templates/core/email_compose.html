@@ -1,0 +1,73 @@
+{% extends "base.html" %} {% load static %} {% block title_page %}
+{{title_page.capitalize }} {% endblock %} {% block breadcrumb %}
+
+<li class="breadcrumb-item">
+  <a href="">{{ title_page.capitalize }}</a>
+</li>
+{% endblock %} {% block content %}
+<div class="col-lg-12 col-md-12">
+  <div class="row">
+                            <div class="col-xl-3">
+                                <div class="card">
+                                    <div class="list-group list-group-transparent mb-0 mail-inbox pb-3">
+                                        <div class="mt-2 mb-2 mx-4 text-center">
+                                        </div>
+                                        <a href="{% url 'core:email-inbox' %}" class="list-group-item d-flex align-items-center mx-4">
+                                            <span class="icons"><i class="ri-mail-line"></i></span> Inbox <span class="ms-auto badge bg-secondary bradius">14</span>
+                                        </a>
+                                        <a href="{% url 'core:email-sent' %}" class="list-group-item d-flex align-items-center mx-4">
+                                            <span class="icons"><i class="ri-mail-send-line"></i></span> Sent Mail
+                                        </a>
+                                        <a href="{% url 'core:email-trash' %}" class="list-group-item d-flex align-items-center mx-4">
+                                            <span class="icons"><i class="ri-delete-bin-line"></i></span> Trash
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-9">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Compose new message</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <form action="{% url 'core:send-message' %}" method="post">
+                                          {% csrf_token %}
+                                            <div class="form-group">
+                                                <div class="row align-items-center">
+                                                    <label class="col-xl-2 form-label">To</label>
+                                                    <div class="col-xl-10">
+                                                        <select data-placeholder="Select one..." id="id_{{ field.name }}" name="to_user" class="select2 form-control">
+                                                          {% for user in users %}
+                                                              <option value="{{ user.id }}">{{user}}</option>
+                                                          {% endfor %}
+                                                      </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row align-items-center">
+                                                    <label class="col-xl-2 form-label">Subject</label>
+                                                    <div class="col-xl-10">
+                                                        <input name="subject" type="text" class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row ">
+                                                    <label class="col-xl-2 form-label">Message</label>
+                                                    <div class="col-xl-10">
+                                                        <textarea name="content" rows="10" class="form-control"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>                                        
+                                    </div>
+                                    <div class="card-footer d-sm-flex">
+                                        <div class="btn-list ms-auto my-auto">
+                                            <button type="submit" class="btn btn-primary btn-space mb-0">Send message</button>
+                                        </div>
+                                    </div>
+                                  </form>
+                                </div>
+                            </div>
+                        </div>
+  {% endblock %} 

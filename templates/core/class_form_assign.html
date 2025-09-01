@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title_page %}
+{{ title_page.capitalize }}
+{% endblock %}
+
+{% block breadcrumb %}
+
+    <li class="breadcrumb-item ">
+        <a href="">{{ title_page.capitalize }}</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">
+        {% if not object %}
+            Crear
+        {% else %}
+            Editar
+        {% endif %}
+        {{ title_page.capitalize }}
+    </li>
+{% endblock %}
+
+{% block content %}
+<div class="col-lg-12 col-md-12">
+    {% if form.errors %}
+    {% for key, value in form.errors.items %}                        
+        <div class="alert alert-danger" role="alert">
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-hidden="true">×</button>
+            {{value}}
+        </div>
+    {% endfor %} 
+    {% endif %}
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">{% if not object %}Agregar{% else %}Editar{% endif %} {{ titulo_page.capitalize }}</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <form class="row" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% comment %} {% include 'form_snippet.html' %} {% endcomment %}
+                    {% comment %} {{form.as_p}} {% endcomment %}
+                    <div id="child-class" class="col-12">
+                    {% for child in childs_groups %}
+                        <span id="{{child.id}}" class="badge rounded-pill bg-primary badge-sm me-1 mb-1 mt-1">{{child}} <a href="#" class='ms-2' style='color:white' onClick="deleteChild({{child.id}},'{{child.first_name}}','{{child.last_name}}')">X</a></span>
+                    {% endfor %}
+                    </div>
+                    <div class="col-sm-12 col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">Niños(a) para agregar al grupo: <span class="text-red">*</span></label>
+                            <select multiple data-placeholder="Select one or more..." id="id_childs" name="childs" class="select2 form-control">
+                                {% for child in childs %}                                
+                                <option value="{{child.id}}" {% if form.child.value == child.id %}selected{% endif %}>{{child}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    {% comment %} {% for child in childs %}
+                    <div class="col-sm-4 col-md-4 col-xl-4">
+                        <label class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" name="childs" value="{{child.id}}">
+                            <span class="custom-control-label">{{child}}</span>
+                        </label>
+                    </div>
+                    {% endfor %} {% endcomment %}
+                    <hr>
+                    <div class="col-sm-4 col-md-4">
+                        <button type="submit" class="btn btn-success waves-effect waves-light m-r-10">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block jsextra %}
+
+    
+    <script src="{% static 'plugins/bootstrap5-typehead/autocomplete.js' %}"></script>
+    <script src="{% static 'js/typehead.js' %}"></script>
+    <script src="{% static 'plugins/formwizard/jquery.smartWizard.js' %}"></script>
+    <script src="{% static 'plugins/formwizard/fromwizard.js' %}"></script>
+    <script src="{% static 'plugins/jquery-steps/jquery.steps.min.js' %}"></script>
+    <script src="{% static 'plugins/parsleyjs/parsley.min.js' %}"></script>
+    <script src="{% static 'js/form-wizard.js' %}"></script>
+
+
+    <script src="{% static 'plugins/select2/select2.full.min.js' %}"></script>
+    <script src="{% static 'js/select2.js' %}"></script>
+    <script src="{% static 'js/form-validation.js' %}"></script>
+
+    <script src="{% static 'js/formelementadvnced' %}"></script>
+    <script src="{% static 'js/form-elements.js' %}"></script>
+
+
+    <script src="{% static 'plugins/fileuploads/js/fileupload.js' %}"></script>
+    <script src="{% static 'plugins/fileuploads/js/file-upload.js' %}"></script>
+    <script src="{% static 'plugins/fancyuploder/jquery.ui.widget.js' %}"></script>
+    <script src="{% static 'plugins/fancyuploder/jquery.fileupload.js' %}"></script>
+    <script src="{% static 'plugins/fancyuploder/jquery.iframe-transport.js' %}"></script>
+    <script src="{% static 'plugins/fancyuploder/jquery.fancy-fileupload.js' %}"></script>
+    <script src="{% static 'plugins/fancyuploder/fancy-uploader.js' %}"></script>
+    <script src="{% static 'plugins/notify/js/sample.js' %}"></script>
+    <script src="{% static 'plugins/notify/js/notifIt.js' %}"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#two').removeClass("active");
+            $('#one').addClass("active");
+        });
+
+        function deleteChild(child, name_child, last_child){
+            div_childs = $('#child-class')
+            select_childs = $('#id_childs')
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'core:delete_child_group' %}",
+                data: {
+                    'child_id': child,                    
+                    'class_id': '{{object.pk}}',
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function(data) {
+                    notif({
+                        msg: "Se ha eliminado satisfactoriamente.",
+                        type: "success"
+                    }); 
+                    $("#"+child).remove()
+                    /*div_childs.html("") 
+                    data.forEach(function(item) {
+                        parameters = item['id']
+                        div_childs.append("\
+                        <span class='badge rounded-pill bg-primary badge-sm me-1 mb-1 mt-1'>"+item['name']+"<a href='#' class='ms-2' style='color:white' onClick='deleteChild("+parameters+")'>X</a></span>\
+                        "); 
+                    });            */          
+                    optionText = name_child + " " + last_child;
+                    optionValue = child;
+                    let optionHTML = `
+                    <option value="${optionValue}"> 
+                        ${optionText} 
+                    </option>`;
+                    select_childs.append(optionHTML);    
+                    
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText);
+                    notif({
+                        msg: "Ha ocurrido un error.",
+                        type: "error"
+                    });
+                }
+            });
+        }
+    </script>
+
+{% endblock %}

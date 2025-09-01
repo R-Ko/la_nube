@@ -1,0 +1,129 @@
+{% extends "base.html" %} {% load static %} {% block title_page %}
+{{title_page.capitalize }} {% endblock %} {% block breadcrumb %}
+
+<li class="breadcrumb-item">
+  <a href="">{{ title_page.capitalize }}</a>
+</li>
+<li class="breadcrumb-item active" aria-current="page">
+  Details {{ title_page.capitalize }}
+</li>
+{% endblock %} {% block content %} {% comment %} Modal Image {% endcomment %}
+<div class="modal fade" id="modaldemo8">
+  <div
+    class="modal-dialog modal-xl modal-dialog-centered text-center"
+    role="document"
+  >
+    <div class="modal-content modal-content-demo">
+      <div class="modal-body">
+        <img
+          src="{{MEDIA_URL}}{{booking.ownership.image.url}}"
+          alt="image"
+          class="img-fluid"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+{% comment %} EndModal {% endcomment %}
+
+<div class="row">
+  <div class="col-lg-8 col-md-8">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Information</h3>
+      </div>
+      <div class="card-body">
+        <dl class="row">
+          <dt class="col-sm-2">First Name</dt>
+          <dd class="col-sm-10">{{subscription.first_name}}</dd>
+          <dt class="col-sm-2">Last Name</dt>
+          <dd class="col-sm-10">{{subscription.last_name}}</dd>
+          <dt class="col-sm-2">Company</dt>
+          <dd class="col-sm-10">{{subscription.company_name}}</dd>
+          <dt class="col-sm-2">Email</dt>
+          <dd class="col-sm-10">{{subscription.email}}</dd>
+          <dt class="col-sm-2">Address</dt>
+          <dd class="col-sm-10">{{subscription.address}}</dd>
+          <dt class="col-sm-2">Postal Code</dt>
+          <dd class="col-sm-10">{{subscription.postal_code}}</dd>
+          <dt class="col-sm-2">City</dt>
+          <dd class="col-sm-10">{{subscription.city}}</dd>
+          <dt class="col-sm-2">Country</dt>
+          <dd class="col-sm-10">{{subscription.country}}</dd>
+        </dl>
+      </div>
+    </div>
+    <a
+      id="bDetails"
+      href="{% url 'core:subscription-edit' subscription.id %}"
+      class="btn btn-md btn-primary"
+    >
+      <span class="fe fe-edit"> </span> Edit
+    </a>
+  </div>
+  <div class="col-lg-4 col-md-4">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Subscription</h3>
+      </div>
+      <div class="card-body">
+        <dl class="row">
+          <dt class="col-sm-2">Status</dt>
+          <dd class="col-sm-10">
+            <span class="badge bg-info badge-lg">{{subscription.active|yesno:"Yes,Not"}}</span
+            >
+          </dd>
+          <dt class="col-sm-2">Plan</dt>
+          <dd class="col-sm-10">Free</dd>
+          <dt class="col-sm-2">Type</dt>
+          <dd class="col-sm-10">{{subscription.subscription_type}}</dd>
+          <dt class="col-sm-2">Date</dt>
+          <dd class="col-sm-10">{{subscription.Creard_at}}</dd>
+        </dl>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Payment</h3>
+      </div>
+      <div class="card-body">
+        <dl class="row">
+          <dt class="col-sm-3">Date</dt>
+          <dd class="col-sm-9">{{subscription.purchase_date|default:''}}</dd>
+          <dt class="col-sm-3">Purchased</dt>
+          <dd class="col-sm-9">
+            <span class="badge bg-warning badge-sm me-1 mb-1 mt-1"
+              >{{subscription.purchased|yesno:"Yes,Not"}}</span
+            >
+          </dd>
+          <dt class="col-sm-3">Method</dt>
+          <dd class="col-sm-9">{{subscription.payment_method|default:''}}</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block jsextra %}
+
+<script src="{% static 'plugins/bootstrap5-typehead/autocomplete.js' %}"></script>
+<script src="{% static 'js/typehead.js' %}"></script>
+
+<script src="{% static 'plugins/datatable/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/dataTables.bootstrap5.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/buttons.bootstrap5.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/jszip.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/pdfmake/pdfmake.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/pdfmake/vfs_fonts.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/buttons.html5.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/buttons.print.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/buttons.colVis.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/responsive.bootstrap5.min.js' %}"></script>
+<script src="{% static 'js/table-data.js' %}"></script>
+
+<script>
+  $(document).ready(function () {});
+</script>
+
+{% endblock %}

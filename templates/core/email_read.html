@@ -1,0 +1,189 @@
+{% extends "base.html" %} 
+{% load static %} 
+{% block title_page %}
+{{title_page.capitalize }} 
+{% endblock %} 
+{% block breadcrumb %}
+
+<li class="breadcrumb-item">
+  <a href="">{{ title_page.capitalize }}</a>
+</li>
+{% endblock %} 
+{% block content %}
+
+{% comment %} Modal Image {% endcomment %}
+<div class="modal fade" id="modaldemo8">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+            <h4>Crear offer</h4>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="">
+                    <div class="row">
+                        <div class="form-group col-md-6">                            
+                            <label for="exampleInputEmail1" class="form-label"><strong>Departure Date</strong></label>
+                            <input type="datetime-local" class="form-control ui-timepicker-input" id="date_start" name="date_start" placeholder="Departure Date" autocomplete="off">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="exampleInputPassword1" class="form-label"><strong>Return Date</strong></label>
+                            <input type="datetime-local" class="form-control ui-timepicker-input" id="date_return" name="date_return" placeholder="Return Date" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="exampleInputEmail1" class="form-label"><strong>Duration</strong></label>
+                            <input type="number" class="form-control" name="duration" id="duration" placeholder="Duration">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="exampleInputPassword1" class="form-label"><strong>Guests</strong></label>
+                            <input type="number" class="form-control" name="guests" id="guests" placeholder="Guests">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label for="exampleInputEmail1" class="form-label"><strong>Message</strong></label>
+                            <textarea class="form-control" name="message" id="message" placeholder="Message"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="exampleInputEmail1" class="form-label"><strong>Price</strong></label>
+                            <input type="number" class="form-control" name="price" id="price" placeholder="Price">
+                        </div>
+                    </div>
+                    <input type="hidden" class="form-control" name="email" id="email" value={{email.id}} placeholder="Price">
+                </div>
+                <button class="btn btn-primary mt-4 mb-0">Send</button>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% comment %} EndModal {% endcomment %}
+
+
+  <div class="modal fade" id="modaldemo9">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+            <h4>Offer</h4>
+            <dl class="row">
+              <dt class="col-sm-4">Departure Date</dt>
+              <dd class="col-sm-8">{{email.offer.departure_date}}</dd>
+              <dt class="col-sm-4">Return Date</dt>
+              <dd class="col-sm-8">{{email.offer.return_date}}</dd>
+              <dt class="col-sm-4">Duration</dt>
+              <dd class="col-sm-8">{{email.offer.duration}}</dd>
+              <dt class="col-sm-4">Guests</dt>
+              <dd class="col-sm-8">{{email.offer.guests}}</dd>
+              <dt class="col-sm-4">Price</dt>
+              <dd class="col-sm-8">{{email.offer.price}}</dd>
+              <dt class="col-sm-4">Message</dt>
+              <dd class="col-sm-8">{{email.offer.message}}</dd>
+              <dt class="col-sm-4">Status</dt>
+              <dd class="col-sm-8">{{email.offer.get_status_display}}</dd>
+            </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div id="content" class="col-lg-12 col-md-12">
+  <div class="row">
+                            <div class="col-xl-3">
+                                <div class="card">
+                                    <div class="list-group list-group-transparent mb-0 mail-inbox pb-3">
+                                        <div class="mt-4 mb-4 mx-4 text-center">
+                                            <a href="{% url 'core:email-compose' %}" class="btn btn-primary btn-lg d-grid">Compose</a>
+                                        </div>
+                                        <a href="{% url 'core:email-inbox' %}" class="list-group-item d-flex align-items-center mx-4">
+                                            <span class="icons"><i class="ri-mail-line"></i></span> Inbox <span class="ms-auto badge bg-secondary bradius">14</span>
+                                        </a>
+                                        <a href="{% url 'core:email-sent' %}" class="list-group-item d-flex align-items-center mx-4">
+                                            <span class="icons"><i class="ri-mail-send-line"></i></span> Sent Mail
+                                        </a>
+                                        <a href="{% url 'core:email-trash' %}" class="list-group-item d-flex align-items-center mx-4">
+                                            <span class="icons"><i class="ri-delete-bin-line"></i></span> Trash
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-9">
+                              <div class="card">
+                                  <div class="card-header">
+                                      <h3 class="card-title">Mail Read</h3>
+                                  </div>
+                                  <div class="card-body">
+                                      <div class="email-media">
+                                          <div class="mt-0 d-sm-flex">
+                                              <img class="me-2 rounded-circle avatar avatar-lg" src="{% static 'images/users/2.jpg' %}" alt="avatar">
+                                              <div class="media-body pt-0">
+                                                  <div class="float-md-end d-flex fs-15">
+                                                      <small class="me-3 mt-3 text-muted">{{email.date}}</small>
+                                                      {% if not email.offer.active %}
+                                                      <a id="offer" data-bs-effect="effect-flip-horizontal" data-bs-toggle="modal" href="#modaldemo8" class="me-3 email-icon text-success bg-success-transparent"><i class="fa fa-star"></i></a>
+                                                      {% endif %}
+                                                      <a href="{% url 'core:reply-message' email.id %}" class="me-3 email-icon text-secondary bg-secondary-transparent" data-bs-toggle="tooltip" aria-label="Reply" data-bs-original-title="Reply"><i class="fa fa-reply"></i></a>
+                                                      <a href="{% url 'core:delete-message' email.id %}" class="me-3 email-icon text-danger bg-warning-transparent" data-bs-toggle="tooltip" aria-label="Delete" data-bs-original-title="Delete"><i class="fa fa-trash"></i></a>
+                                                  </div>
+                                                  <div class="media-title text-dark font-weight-semibold mt-1">{{email.from_user}} <span class="text-muted font-weight-semibold">({{email.from_user.email}})</span></div>
+                                                  <small class="mb-0">to {{email.to_user}} ({{email.to_user.email}}) </small>
+
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <div class="eamil-body mt-5">
+                                          <div class="mb-2">{{email.subject}}</div>
+                                          {{email.content}}
+                                      </div>
+                                  </div>
+                                  <div class="card-footer">
+                                      <a class="btn btn-secondary mt-1 mb-1" href="javascript:void(0)"><i class="fa fa-reply"></i> Reply</a>
+                                      {% if email.offer.active %}
+                                      <a class="btn btn-success mt-1 mb-1" data-bs-effect="effect-flip-horizontal" data-bs-toggle="modal" href="#modaldemo9"><i class="fa fa-star"></i> Offer</a>
+                                      {% endif %}
+                                      {% comment %} <a class="btn btn-secondary mt-1 mb-1" href="javascript:void(0)"><i class="fa fa-share"></i> Forward</a> {% endcomment %}
+                                  </div>
+                              </div>
+                          </div>
+                        </div>
+  {% endblock %} 
+
+{% block jsextra %}
+
+<script>
+    $(document).ready(function() {
+        var document = $('#content')
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+              xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+            }
+          });
+
+      $('#modaldemo8').on('submit', 'form', function(event) {
+        event.preventDefault();
+        var formData = $(this).serialize();
+        $.ajax({
+          type: 'POST',
+          url: '{% url "core:send_offer" %}',
+          data: $(this).serialize(),
+          contentType: 'application/x-www-form-urlencoded',
+          success: function(data) {
+            console.log('Offer sent successfully!');
+            // You can also update the UI here, e.g. close the modal
+            $('#modaldemo8').modal('hide');
+            $('#modaldemo8 form').trigger('reset');
+            $('#modaldemo8 textarea').val('');
+            $('#offer').remove();
+            document.prepend("<div class='alert alert-success' role='alert'><button type='button' class='btn-close' data-bs-dismiss='alert' aria-hidden='true'>× </button> <i class='fa fa-check-circle-o me-2' aria-hidden='true'></i> The offer was Creard.</div>")
+          },
+          error: function(xhr, status, error) {
+            console.log('Error sending offer:', error);
+          }
+        });
+      });
+    });
+  </script>
+
+{% endblock %} 

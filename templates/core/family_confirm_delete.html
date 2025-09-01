@@ -1,0 +1,39 @@
+{% extends "base.html" %} {% load static %} {% block title_page %}
+{{title_page.capitalize }} {% endblock %} {% block breadcrumb %}
+
+<li class="breadcrumb-item">
+  <a href="#">{{ title_page.capitalize }}</a>
+</li>
+<li class="breadcrumb-item active" aria-current="page">
+  Eliminar {{title_page.capitalize }}
+</li>
+{% endblock %} {% block content %}
+<div class="col-lg-12 col-md-12">
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">Eliminar {{ title_page.capitalize }}</h3>
+    </div>
+    <div class="card-body">
+      <form
+        class="needs-validation"
+        method="post"
+        enctype="multipart/form-data"
+      >
+        {% csrf_token %}
+        <p>
+          El familiar <strong>{{ object }}</strong> será eliminado permanentemente de la base de datos. ¿Está seguro que desea realizar esta acción?
+        </p>
+        <a href="{% url 'core:professor-list' %}" class="btn btn-success"
+          >Cancelar</a
+        >
+        <button
+          type="submit"
+          class="btn btn-danger waves-effect waves-light m-r-10"
+        >
+          Eliminar
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

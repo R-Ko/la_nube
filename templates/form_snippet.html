@@ -1,0 +1,44 @@
+{% load static %}
+{% for field in form %}
+    {% if field.widget_type == "clearablefile" %}
+        <div class="col-xl-12 mb-3">
+            <div class="form-file">
+                <label for="val{{ field.name }}1">{{ field.label_tag }}</label>                            
+                <input type="file" class="form-control" id="id_{{ field.name }}" name="{{ field.name }}">
+            </div>
+        </div>
+        <br>
+    {% elif field.widget_type == "select" %}
+        <div class="form-group">
+            <label class="form-label">{{ field.label_tag }}</label>
+            <select data-placeholder="Select one or more..." id="id_{{ field.name }}" name="{{ field.name }}" class="select2 form-control">
+                {% for choice in field.field.choices %}
+                    <option value="{{ choice.0 }}" {% if object.ownership.name == choice.0 %}selected{% endif %}>{{choice.1}}</option>
+                {% endfor %}
+            </select>
+        </div>
+    {% elif field.widget_type == "textarea" %}
+        <div class="form-group">
+            <div class="form-group">
+                <label class="form-label" for="val{{ field.name }}">{{ field.label_tag }}</label>                                            
+                <textarea id="id_{{ field.name }}" name="{{ field.name }}" {% if field.field.required %}required{% endif %} class="form-control mb-4" placeholder="" rows="5">{% if object %}{{field.value}}{% endif %}</textarea>
+            </div>
+        </div>
+    {% elif field.widget_type == "checkbox" %}
+        <div class="form-group">
+            <div class="form-group">
+                <label class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" name="{{ field.name }}" id="{{ field.name }}">
+                    <span class="custom-control-label">{{ field.label_tag }}</span>
+                </label> 
+            </div>
+        </div>
+    {% else %}
+        <div class="form-group">
+            <div class="form-floating">
+                <input {% if object %}value="{{field.value}}"{% endif %} placeholder="" type="{{ field.field.widget.input_type }}" class="form-control" id="id_{{ field.name }}" name="{{ field.name }}" {% if field.field.required %}required{% endif %}>
+                <label for="val{{ field.name }}">{{ field.label_tag }}</label>
+            </div>
+        </div>
+    {% endif %}
+{% endfor %}

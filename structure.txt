@@ -1,0 +1,240 @@
+ El volumen de la unidad C es Windows-SSD
+ El n£mero de serie del volumen es: 2A1D-10EE
+
+ Directorio de C:\Daniel\la_nube\requerimientos0625
+
+23/08/2025  16:50    <DIR>          .
+23/08/2025  16:17    <DIR>          ..
+22/08/2025  13:55                52 .env
+22/08/2025  13:55    <DIR>          core
+22/08/2025  13:55               823 docker-compose.yml
+22/08/2025  13:55               381 Dockerfile
+22/08/2025  13:55    <DIR>          lanube
+22/08/2025  13:55               662 manage.py
+22/08/2025  13:55    <DIR>          media
+23/08/2025  16:48         6.823.936 mydatabase.sqlite
+22/08/2025  13:55        95.870.976 mydatabase.sqlite_backup
+22/08/2025  13:55                26 README.md
+22/08/2025  13:55               119 requirements.txt
+22/08/2025  13:55    <DIR>          static
+23/08/2025  16:50                 0 structure.txt
+22/08/2025  13:55    <DIR>          templates
+               9 archivos    102.696.975 bytes
+
+ Directorio de C:\Daniel\la_nube\requerimientos0625\core
+
+22/08/2025  13:55    <DIR>          .
+23/08/2025  16:50    <DIR>          ..
+22/08/2025  13:55               413 admin.py
+22/08/2025  13:55               140 apps.py
+22/08/2025  13:55             6.436 forms.py
+22/08/2025  13:55             1.426 middleware.py
+23/08/2025  16:18    <DIR>          migrations
+22/08/2025  13:55    <DIR>          models
+22/08/2025  13:55                26 models.py
+22/08/2025  13:55    <DIR>          serializers
+22/08/2025  13:55                60 tests.py
+22/08/2025  13:55             7.829 urls.py
+22/08/2025  13:55    <DIR>          views
+22/08/2025  13:55                 0 __init__.py
+23/08/2025  16:18    <DIR>          __pycache__
+               8 archivos         16.330 bytes
+
+
+
+ Directorio de C:\Daniel\la_nube\requerimientos0625\core\models
+
+22/08/2025  13:55    <DIR>          .
+22/08/2025  13:55    <DIR>          ..
+22/08/2025  13:55               495 Activity.py
+22/08/2025  13:55               569 Alert.py
+22/08/2025  13:55               577 AssistanceDaily.py
+22/08/2025  13:55             1.585 Bill.py
+22/08/2025  13:55             1.338 Child.py
+22/08/2025  13:55               516 ClassGroup.py
+22/08/2025  13:55               792 Event.py
+22/08/2025  13:55               930 Family.py
+22/08/2025  13:55               559 Gallery.py
+22/08/2025  13:55               605 PageVisit.py
+22/08/2025  13:55             1.917 Parent.py
+22/08/2025  13:55             1.663 Professor.py
+22/08/2025  13:55               612 ReportChild.py
+22/08/2025  13:55             2.390 User.py
+22/08/2025  13:55                 0 __init__.py
+23/08/2025  16:18    <DIR>          __pycache__
+              15 archivos         14.548 bytes
+
+
+
+ Directorio de C:\Daniel\la_nube\requerimientos0625\core\serializers
+
+22/08/2025  13:55    <DIR>          .
+22/08/2025  13:55    <DIR>          ..
+22/08/2025  13:55                 0 __init__.py
+               1 archivos              0 bytes
+
+ Directorio de C:\Daniel\la_nube\requerimientos0625\core\views
+
+22/08/2025  13:55    <DIR>          .
+22/08/2025  13:55    <DIR>          ..
+22/08/2025  13:55             5.211 Activity.py
+22/08/2025  13:55             3.410 Alert.py
+22/08/2025  13:55             2.914 AssistanceDaily.py
+22/08/2025  13:55             4.834 Bill.py
+22/08/2025  13:55             3.052 ChangePassword.py
+22/08/2025  13:55            18.500 Child.py
+22/08/2025  13:55             5.968 ClassGroup.py
+22/08/2025  13:55             3.675 Event.py
+22/08/2025  13:55             5.507 Family.py
+22/08/2025  13:55             1.823 Gallery.py
+22/08/2025  13:55             7.615 Parent.py
+22/08/2025  13:55             5.503 Professor.py
+22/08/2025  13:55             5.229 ReportChild.py
+22/08/2025  13:55             4.784 User.py
+22/08/2025  13:55             5.769 views.py
+22/08/2025  13:55                 0 __init__.py
+23/08/2025  16:18    <DIR>          __pycache__
+              16 archivos         83.794 bytes
+
+
+
+ Directorio de C:\Daniel\la_nube\requerimientos0625\lanube
+
+22/08/2025  13:55    <DIR>          .
+23/08/2025  16:50    <DIR>          ..
+22/08/2025  13:55               389 asgi.py
+22/08/2025  13:55             4.935 settings.py
+22/08/2025  13:55             1.315 urls.py
+22/08/2025  13:55               389 wsgi.py
+22/08/2025  13:55                 0 __init__.py
+23/08/2025  16:21    <DIR>          __pycache__
+               5 archivos          7.028 bytes
+
+
+ Directorio de C:\Daniel\la_nube\requerimientos0625\media
+
+22/08/2025  13:55    <DIR>          .
+23/08/2025  16:50    <DIR>          ..
+22/08/2025  13:55    <DIR>          child_images
+               0 archivos              0 bytes
+
+ Directorio de C:\Daniel\la_nube\requerimientos0625\media\child_images
+
+22/08/2025  13:55    <DIR>          .
+22/08/2025  13:55    <DIR>          ..
+22/08/2025  13:55           413.147 1000237345.jpg
+22/08/2025  13:55             7.661 1000237397.jpeg
+22/08/2025  13:55            16.921 bigstock-Plaza-Mayor--Trinidad-Cuba-1813264723.jpeg
+22/08/2025  13:55            16.921 bigstock-Plaza-Mayor--Trinidad-Cuba-1813264723_PjtXNy7.jpeg
+22/08/2025  13:55            33.742 plaza-mayor-de-trinidad-7031.jpeg
+               5 archivos        488.392 bytes
+
+
+ Directorio de C:\Daniel\la_nube\requerimientos0625\templates
+
+22/08/2025  13:55    <DIR>          .
+23/08/2025  16:50    <DIR>          ..
+22/08/2025  13:55           103.859 base.html
+22/08/2025  13:55    <DIR>          core
+22/08/2025  13:55    <DIR>          errors
+22/08/2025  13:55             2.412 form_snippet.html
+22/08/2025  13:55    <DIR>          registration
+22/08/2025  13:55            25.626 sidebar.html
+               3 archivos        131.897 bytes
+
+ Directorio de C:\Daniel\la_nube\requerimientos0625\templates\core
+
+22/08/2025  13:55    <DIR>          .
+22/08/2025  13:55    <DIR>          ..
+22/08/2025  13:55             3.522 activity_child_list.html
+22/08/2025  13:55             1.202 activity_confirm_delete.html
+22/08/2025  13:55             3.773 activity_form.html
+22/08/2025  13:55             7.025 activity_form_assign.html
+22/08/2025  13:55             5.168 activity_list.html
+22/08/2025  13:55             1.315 alert_confirm_delete.html
+22/08/2025  13:55             5.583 alert_form.html
+22/08/2025  13:55             5.466 alert_list.html
+22/08/2025  13:55             3.560 assistance_daily_list.html
+22/08/2025  13:55             1.174 bill_confirm_delete.html
+22/08/2025  13:55             7.283 bill_form.html
+22/08/2025  13:55             4.819 bill_history.html
+22/08/2025  13:55             5.251 bill_list.html
+22/08/2025  13:55             2.704 calendar.html
+22/08/2025  13:55            16.675 child_details.html
+22/08/2025  13:55             8.263 child_form_edit.html
+22/08/2025  13:55            10.193 child_form_five.html
+22/08/2025  13:55            10.178 child_form_four.html
+22/08/2025  13:55             9.125 child_form_one.html
+22/08/2025  13:55             8.625 child_form_three.html
+22/08/2025  13:55             8.763 child_form_two.html
+22/08/2025  13:55             4.204 child_history.html
+22/08/2025  13:55             5.832 child_list.html
+22/08/2025  13:55             4.633 class_child_list.html
+22/08/2025  13:55             1.182 class_confirm_delete.html
+22/08/2025  13:55             3.773 class_form.html
+22/08/2025  13:55             6.997 class_form_assign.html
+22/08/2025  13:55             5.824 class_list.html
+22/08/2025  13:55             6.041 collabs_form_edit.html
+22/08/2025  13:55             5.015 email_compose.html
+22/08/2025  13:55             6.314 email_inbox.html
+22/08/2025  13:55            10.903 email_read.html
+22/08/2025  13:55             4.992 email_reply.html
+22/08/2025  13:55             1.173 event_confirm_delete.html
+22/08/2025  13:55             6.331 event_form.html
+22/08/2025  13:55             2.905 event_list.html
+22/08/2025  13:55             1.175 family_confirm_delete.html
+22/08/2025  13:55             7.773 family_form.html
+22/08/2025  13:55             6.237 family_list.html
+22/08/2025  13:55             2.927 gallery.html
+22/08/2025  13:55             3.661 gallery_form.html
+22/08/2025  13:55             3.269 notify_list.html
+22/08/2025  13:55             1.204 ownership_confirm_delete.html
+22/08/2025  13:55             8.222 ownership_details.html
+22/08/2025  13:55            22.631 ownership_form.html
+22/08/2025  13:55             1.177 parent_confirm_delete.html
+22/08/2025  13:55             5.347 parent_details.html
+22/08/2025  13:55             9.855 parent_form.html
+22/08/2025  13:55             4.946 parent_history.html
+22/08/2025  13:55             5.215 parent_list.html
+22/08/2025  13:55             6.872 pricing.html
+22/08/2025  13:55             1.175 professor_confirm_delete.html
+22/08/2025  13:55             5.424 professor_details.html
+22/08/2025  13:55             9.951 professor_form.html
+22/08/2025  13:55             6.595 professor_history.html
+22/08/2025  13:55             7.419 professor_list.html
+22/08/2025  13:55             1.174 reportchild_confirm_delete.html
+22/08/2025  13:55             4.969 reportchild_form.html
+22/08/2025  13:55             4.811 reportchild_history.html
+22/08/2025  13:55             5.062 reportchild_list.html
+22/08/2025  13:55             1.198 subscription_confirm_delete.html
+22/08/2025  13:55             4.887 subscription_details.html
+22/08/2025  13:55            16.063 subscription_form.html
+22/08/2025  13:55             7.321 terms.html
+22/08/2025  13:55             1.165 user_confirm_delete.html
+22/08/2025  13:55             6.927 user_form.html
+22/08/2025  13:55             6.810 user_form_edit.html
+22/08/2025  13:55             4.534 user_history.html
+22/08/2025  13:55             4.993 user_list.html
+              69 archivos        396.775 bytes
+
+ Directorio de C:\Daniel\la_nube\requerimientos0625\templates\errors
+
+22/08/2025  13:55    <DIR>          .
+22/08/2025  13:55    <DIR>          ..
+22/08/2025  13:55             4.335 404.html
+22/08/2025  13:55             4.956 coming_soon.html
+               2 archivos          9.291 bytes
+
+ Directorio de C:\Daniel\la_nube\requerimientos0625\templates\registration
+
+22/08/2025  13:55    <DIR>          .
+22/08/2025  13:55    <DIR>          ..
+22/08/2025  13:55             1.590 cambiar_password.html
+22/08/2025  13:55             6.984 login.html
+22/08/2025  13:55             7.482 register.html
+22/08/2025  13:55             1.588 reset_password.html
+               4 archivos         17.644 bytes
+
+     Total de archivos en la lista:
+            1504 archivos    158.097.641 bytes
+             524 dirs  141.184.823.296 bytes libres

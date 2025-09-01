@@ -1,0 +1,107 @@
+{% extends "base.html" %} 
+{% load static %} 
+{% block title_page %}{{title_page.capitalize }}{% endblock %} 
+{% block breadcrumb %}
+
+<li class="breadcrumb-item">
+  <a href="">{{ title_page.capitalize }}</a>
+</li>
+{% endblock %} 
+
+{% block content %} 
+{% if messages %} {% for message in messages %}
+  <div class="alert alert-success" role="alert">
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-hidden="true"
+    >
+      ×
+    </button>
+    <i class="fa fa-check-circle-o me-2" aria-hidden="true"></i> {{ message }}
+  </div>
+  {% endfor %} {% endif %}
+<div class="row row-cols-4">
+    {% for child in child_list %}
+    <div class="col-md-6  col-xl-4">            
+        <a href="{% url 'core:child-details' child.id %}">
+        <div class="card list-child">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    {% if child.image %}
+                    <img src="{{MEDIA_URL}}{{child.image.url}}" class="card-img-left h-100" alt="img">
+                    {% endif %}
+                </div>
+                <div class="col-md-8">
+                    <div style="color: black" class="card-body">
+                        <h5 class="fw-bold">{{child.first_name}} {{child.last_name}}</h5>
+                        <h6>EXP-{{child.exp}}</h6>
+                        <h6>Desmatriculado: {{child.date_down}}</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </a>
+    </div>
+    {% empty %}
+    <div class="card border p-0">
+        <div class="card-body text-center">
+            <p class="card-text">No hay elementos que mostrar.</p>
+        </div>
+    </div>
+    {% endfor %}
+    {% if is_paginated %}
+    <div class="col-12">
+        <ul class="pagination mg-b-0 page-0 ">
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a aria-label="Next" class="page-link" href="?page={{ page_obj.previous_page_number }}"><i class="fa fa-angle-left"></i></a>
+            </li>
+            {% endif %}
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                    <li class="page-item active">
+                        <a class="page-link" href="javascript:void(0)">{{ num }}</a>
+                    </li>
+                {% else %}
+                    <li class="page-item">
+                        <a class="page-link hidden-xs-down" href="?page={{ num }}">{{ num }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}            
+            
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a aria-label="Next" class="page-link" href="?page={{ page_obj.next_page_number }}"><i class="fa fa-angle-right"></i></a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+    {% endif %}
+</div>
+{% endblock %} 
+{% block jsextra %}
+
+<script src="{% static 'plugins/bootstrap5-typehead/autocomplete.js' %}"></script>
+<script src="{% static 'js/typehead.js' %}"></script>
+
+<script src="{% static 'plugins/datatable/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/dataTables.bootstrap5.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/buttons.bootstrap5.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/jszip.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/pdfmake/pdfmake.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/pdfmake/vfs_fonts.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/buttons.html5.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/buttons.print.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/buttons.colVis.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/responsive.bootstrap5.min.js' %}"></script>
+<script src="{% static 'js/table-data.js' %}"></script>
+
+<script>
+  $(document).ready(function () {});
+</script>
+
+{% endblock %}

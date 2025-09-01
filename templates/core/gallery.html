@@ -1,0 +1,94 @@
+{% extends "base.html" %} 
+{% load static %} 
+{% block title_page %}
+Galería
+{% endblock %} 
+{% block breadcrumb %}
+
+<li class="breadcrumb-item">
+  <a href="/catalogo/municipio/?query=1">Galería</a>
+</li>
+{% endblock %} 
+{% block content %}
+<div class="demo-gallery card">
+  <div class="card-header">
+      <div class="card-title">{{classg}}</div>
+  </div>
+  <div class="card-body">
+      <ul id="lightgallery" class="list-unstyled row">
+        {% for image in gallery %}
+        <li class="col-xs-6 col-sm-4 col-md-4 col-xl-3 mb-5 border-bottom-0" data-responsive="{{MEDIA_URL}}{{image.image.url}}" data-src="{{MEDIA_URL}}{{image.image.url}}" data-sub-html="<h4>Gallery Image 1</h4><p> Many desktop publishing packages and web page editors now use Lorem Ipsum</p>">
+          <img style="width: 100%" src="{{MEDIA_URL}}{{image.image.url}}" class="border-2 border-solid border-gray card-img-left br-5" alt="img">
+          <p style="text-align: center">{{image.date|date:"d/m/Y"}}</p>
+        </li>
+    {% empty %}
+    <div class="card border p-0">
+        <div class="card-body text-center">
+            <p class="card-text">No hay elementos que mostrar.</p>
+        </div>
+    </div>
+    {% endfor %}          
+      </ul>
+  </div>
+</div>
+{% endblock %} 
+
+{% block jsextra %}
+
+<script src="{% static 'plugins/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-daterangepicker/moment.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-datepicker/bootstrap-datepicker.js' %}"></script>
+
+<script src="{% static 'js/fullcalendar.min.js' %}"></script>
+
+<script> 
+  $(function () { 
+      $("#date_custom").datepicker({  
+          autoclose: true,  
+          todayHighlight: true, 
+      }).datepicker('update', new Date()); 
+  }); 
+</script> 
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var calendarEl = document.getElementById("calendar2");
+    calendar = new FullCalendar.Calendar(calendarEl, {
+      headerToolbar: {
+        left: "prev,next today",
+        center: "title",
+        right: "dayGridMonth,timeGridWeek,timeGridDay",
+      },
+      initialView: "dayGridMonth",
+      timeZone: "UTC",
+      businessHours: true,
+      nowIndicator: true,
+      now: "{% now 'Y-m-d\TH:i:s' %}",
+      eventSources: [
+        {
+          url: "{% url 'core:get_events' %}",
+          method: "GET",
+          /*extraParams: {
+            custom_param1: 'something',
+            custom_param2: 'somethingelse'
+          },*/
+          failure: function () {
+            alert("there was an error while fetching events!");
+          },
+          textColor: "black",
+        },
+      ],
+      eventClick: function (info) {
+        alert(info.event.title);
+      },
+    });
+    calendar.render();
+  });
+
+  function fecha(){
+    var date_custom = $('#date_custom').val()
+    calendar.gotoDate(date_custom);
+  }
+</script>
+
+{% endblock %}

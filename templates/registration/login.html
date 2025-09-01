@@ -1,0 +1,129 @@
+{% extends "base.html" %} 
+{% load static %}
+{% block body %}
+<div class="login-img">
+
+    <!-- GLOABAL LOADER -->
+    <div id="global-loader">
+        <img src="{% static 'images/loader.svg' %}" class="loader-img" alt="Loader">
+    </div>
+    <!-- /GLOABAL LOADER -->
+
+    <!-- PAGE -->
+    <div class="page">
+        <div class="">
+            <!-- Theme-Layout -->
+
+
+            <div class="text-center container-login100">
+                {% if form.errors %}
+                <div class="alert alert-default" role="alert">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-hidden="true">×</button>
+                    <i class="fa fa-check-circle-o me-2" aria-hidden="true"></i> El usuario y la contraseña no coinciden. Por favor, inténtelo de nuevo.
+                </div>
+                {% endif %}
+                {% if next %}
+                    {% if user.is_authenticated %}
+                        <div class="alert alert-default" role="alert">
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-hidden="true">×</button>
+                            <i class="fa fa-check-circle-o me-2" aria-hidden="true"></i> Usted no tiene acceso a esta página. Debe iniciar sesión con otra cuenta que tenga acceso.
+                        </div>
+                    {% else %}
+                        {% if next != "/" %}
+                        <div class="alert alert-default" role="alert">
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-hidden="true">×</button>
+                            <i class="fa fa-times-circle-o me-2" aria-hidden="true"></i> Por favor, inicia sesión para acceder a esta página.
+                        </div>
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+            </div>
+
+
+            <!-- CONTAINER OPEN -->
+            <div class="col col-login mx-auto mt-7">
+                <div class="text-center">
+                    <a><img id="img-login" src="{% static 'images/logo.png' %}" class="" alt=""></a>
+                </div>
+            </div>
+            <div class="container-login100">
+                <div class="wrap-login100 p-6">
+                        <form class="login100-form validate-form" method="post" action="{% url 'login' %}">
+                            {% csrf_token %}                        
+                                        <div class="wrap-input100 validate-input input-group" data-bs-validate="Valid email is required: ex@abc.xyz">
+                                            <a href="javascript:void(0)" class="input-group-text bg-white text-muted">
+                                                <i class="zmdi zmdi-email text-muted" aria-hidden="true"></i>
+                                            </a>
+                                            <input id="id_username" name="username" class="input100 border-start-0 form-control ms-0" type="text" placeholder="Usuario" autocomplete="off">
+                                        </div>
+                                        <div class="wrap-input100 validate-input input-group" id="Password-toggle">
+                                            <a href="javascript:void(0)" class="input-group-text bg-white text-muted">
+                                                <i class="zmdi zmdi-eye text-muted" aria-hidden="true"></i>
+                                            </a>
+                                            <input class="input100 border-start-0 form-control ms-0" placeholder="Contraseña" type="password" name="password" autocomplete="off" required="" id="id_password">
+                                        </div>
+                                          <div class="text-end pt-4">
+                                            <p class="mb-0">
+                                                <a  class="text-primary ms-1" href="{% url 'resetear_password' %}">
+                                                    Password olvidado
+                                                </a>
+                                            </p>
+                                        </div>
+                                        <div class="container-login100-form-btn">
+                                            {% comment %} <a href="index.html" class="login100-form-btn btn-primary">
+                                                    Login
+                                            </a> {% endcomment %}
+                                            <input class="login100-form-btn btn-primary" type="submit" value="Log in">
+                                            <input type="hidden" name="next" value="{{ next }}">
+                                        </div>
+                                        {% comment %} <div class="text-center pt-3">
+                                            <p class="text-dark mb-0">Not a member?<a href="{% url 'register' %}" class="text-primary ms-1">Register</a></p>
+                                        </div> {% endcomment %}
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+            <!-- CONTAINER CLOSED -->
+        </div>
+    </div>
+    <!-- End PAGE -->
+
+</div>
+{% endblock %}
+{% block notifications %}   
+{% endblock %}
+
+{% block jsextra %}
+    <script>
+        $(document).ready(function() {
+            // Get the password input and the toggle button
+            const passwordInput = document.getElementById('id_password');
+            const toggleButton = document.querySelector('#Password-toggle a');
+
+            // Add an event listener to the toggle button
+            toggleButton.addEventListener('click', () => {
+            // Check if the password input type is 'password'
+            if (passwordInput.type === 'password') {
+                // Change the password input type to 'text'
+                passwordInput.type = 'text';
+                // Change the icon to a 'hide' icon
+                toggleButton.innerHTML = '<i class="zmdi zmdi-eye-off text-muted" aria-hidden="true"></i>';
+                // Add the 'show-password' class to the toggle button
+                toggleButton.classList.add('show-password');
+                toggleButton.classList.remove('hide-password');
+            } else {
+                // Change the password input type back to 'password'
+                passwordInput.type = 'password';
+                // Change the icon back to a 'show' icon
+                toggleButton.innerHTML = '<i class="zmdi zmdi-eye text-muted" aria-hidden="true"></i>';
+                // Add the 'hide-password' class to the toggle button
+                toggleButton.classList.add('hide-password');
+                toggleButton.classList.remove('show-password');
+            }
+            });
+        });
+    </script>
+{% endblock %}

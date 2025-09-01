@@ -1,0 +1,137 @@
+{% extends "base.html" %} 
+{% load static %} 
+{% block title_page %}{{title_page.capitalize }}{% endblock %} 
+{% block breadcrumb %}
+
+<li class="breadcrumb-item">
+  <a href="{% url 'core:professor-list' %}">Educadoras</a>
+</li>
+<li class="breadcrumb-item active" aria-current="page">
+  {{ title_page.capitalize }}
+</li>
+{% endblock %} 
+
+{% block content %} 
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card mb-4">
+          <div class="card-body text-center">
+            {% if object.image %}
+            <img src="{{MEDIA_URL}}{{object.image.url}}" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+            {% endif %}
+            <h5 class="my-3">{{object.user.first_name}}
+              <p class="text-muted mb-1">{{object.user.groups.all.0}}</p>
+            </h5>            
+            {% comment %} <p class="text-muted mb-4">Bay Area, San Francisco, CA</p> {% endcomment %}
+            <div class="d-flex justify-content-center mb-2">
+              <a href="{% url 'core:professor-edit' object.pk %}" data-mdb-button-init="" data-mdb-ripple-init="" class="btn btn-primary" data-mdb-button-initialized="true">Editar</a>
+              {% comment %} <button type="button" data-mdb-button-init="" data-mdb-ripple-init="" class="btn btn-outline-primary ms-1" data-mdb-button-initialized="true">Message</button> {% endcomment %}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="card mb-4">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Nombre completo</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{object.user.first_name}} {{object.user.last_name}}</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">NIP</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{object.nip|default:""}}</p>
+              </div>
+            </div>
+            <!-- <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Género</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{object.sex|default:""}}</p>
+              </div>
+            </div>
+            <hr> -->
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Teléfono</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{object.phone|default:""}}</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Dirección</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{object.address|default:""}}</p>
+              </div>
+            </div>
+            <!-- <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Fecha de nacimiento</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{object.date_birth|default:""}}</p>
+              </div>
+            </div>
+            <hr> -->
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Nivel Escolar</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{object.school_level|default:""}}</p>
+              </div>
+            </div>
+            {% if object.cv %}
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Curriculum</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{object.cv|default:""}}</p>
+              </div>
+            </div>
+            {% endif %}
+          </div>
+        </div>        
+      </div>
+    </div>
+{% endblock %} 
+{% block jsextra %}
+
+<script src="{% static 'plugins/bootstrap5-typehead/autocomplete.js' %}"></script>
+<script src="{% static 'js/typehead.js' %}"></script>
+
+<script src="{% static 'plugins/datatable/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/dataTables.bootstrap5.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/buttons.bootstrap5.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/jszip.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/pdfmake/pdfmake.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/pdfmake/vfs_fonts.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/buttons.html5.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/buttons.print.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/js/buttons.colVis.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/responsive.bootstrap5.min.js' %}"></script>
+<script src="{% static 'js/table-data.js' %}"></script>
+
+<script>
+  $(document).ready(function () {});
+</script>
+
+{% endblock %}
