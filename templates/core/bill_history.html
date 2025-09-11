@@ -69,14 +69,14 @@
               {% if "Supervisor" == user.groups.all.0.name or user.is_staff %}
               <td class="align-middle">
                 <form
-                  action="{% url 'core:bill-delete' bill.id %}"
+                  action="{% url 'core:bill-hard-delete' bill.id %}"
                   method="post"
                   enctype="multipart/form-data"
                 >
                   {% if user.is_staff %}
                   {% csrf_token %}
                   <button
-                    onclick="return confirm('¿Estás seguro de eliminar el registro?')"
+                    onclick="return confirm('¿Estás seguro de eliminar DEFINITIVAMENTE el registro?')"
                     type="submit"
                     class="btn btn-sm btn-danger"
                   >

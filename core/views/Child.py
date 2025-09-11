@@ -106,36 +106,44 @@ class ChildStepTwoCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.is_mother = True
         form.instance.created_by = self.request.user
+        
+        # Obtener el NIP del formulario
+        nip = form.cleaned_data.get('nip')
+        
         # 🔹 Buscar si ya existe usuario con este nip
-        user = User.objects.filter(nip=form.instance.nip).first()
+        user = UserApp.objects.filter(nip=nip).first()
         if not user:
-            username = f"{form.instance.first_name.lower()}{form.instance.nip}"
-            password = f"{form.instance.first_name}{form.instance.nip}"
-            user = User.objects.create_user(
+            # Generar username y contraseña
+            username = f"{form.cleaned_data['first_name'].lower()}{nip}"
+            password = f"{form.cleaned_data['first_name']}{nip}"
+            user = UserApp.objects.create_user(
                 username=username,
-                first_name=form.instance.first_name,
-                last_name=form.instance.last_name,
+                first_name=form.cleaned_data['first_name'],
+                last_name=form.cleaned_data['last_name'],
                 password=password,
-                nip=form.instance.nip
+                nip=nip
             )
             progenitor_group, _ = Group.objects.get_or_create(name="Progenitor")
             user.groups.add(progenitor_group)
+        
+        # Asignar el usuario al Parent
         form.instance.user = user
-        # 🔹 Buscar madre existente por nip
-        parent = Parent.objects.filter(nip=form.instance.nip, is_mother=True).first()
+        
+        # 🔹 Buscar madre existente por nip (a través del usuario)
+        parent = Parent.objects.filter(user__nip=nip, is_mother=True).first()
         if parent is None:
             obj = super().form_valid(form)
             id_parent = form.instance.id
         else:
             # actualizar madre existente
-            parent.first_name = form.instance.first_name
-            parent.last_name = form.instance.last_name
-            parent.address = form.instance.address
-            parent.phone = form.instance.phone
-            parent.illnesses = form.instance.illnesses
-            parent.alcoholism = form.instance.alcoholism
-            parent.smoking = form.instance.smoking
-            parent.life = form.instance.life
+            parent.first_name = form.cleaned_data['first_name']
+            parent.last_name = form.cleaned_data['last_name']
+            parent.address = form.cleaned_data['address']
+            parent.phone = form.cleaned_data['phone']
+            parent.illnesses = form.cleaned_data['illnesses']
+            parent.alcoholism = form.cleaned_data['alcoholism']
+            parent.smoking = form.cleaned_data['smoking']
+            parent.life = form.cleaned_data['life']
             # 🔹 Agregar el campo can_pickup
             parent.can_pickup = form.cleaned_data.get('can_pickup', False)
             if not parent.user:
@@ -148,6 +156,7 @@ class ChildStepTwoCreateView(LoginRequiredMixin, CreateView):
             child.mother_id = id_parent
             child.save()
             return HttpResponseRedirect(self.get_success_url())
+        
         # 🔹 Vincular madre al niño
         child_id = self.request.session.get('child_id')
         child = Child.objects.get(pk=child_id)
@@ -159,7 +168,8 @@ class ChildStepTwoCreateView(LoginRequiredMixin, CreateView):
         context = super().get_context_data(**kwargs)
         context["title_page"] = "Niños"
         context["pk"] = self.kwargs.get('pk')
-        context["parent"] = Parent.objects.filter(user=self.request.user, is_mother=True).first()
+        parent = Parent.objects.filter(user=self.request.user, is_mother=True).first()
+        context["parent"] = parent
         # 🔹 Agregar etiqueta para el checkbox
         context["pickup_label"] = "¿Puede recoger al niño?"
         return context
@@ -168,8 +178,10 @@ class ChildStepTwoCreateView(LoginRequiredMixin, CreateView):
         initial = super().get_initial()
         parent = Parent.objects.filter(user=self.request.user, is_mother=True).first()
         if parent:
+            # Obtenemos el nip del usuario asociado al parent
+            nip = parent.user.nip if parent.user else ''
             initial.update({
-                'nip': parent.nip,
+                'nip': nip,
                 'first_name': parent.first_name,
                 'last_name': parent.last_name,
                 'address': parent.address,
@@ -182,7 +194,7 @@ class ChildStepTwoCreateView(LoginRequiredMixin, CreateView):
                 'can_pickup': parent.can_pickup,
             })
         return initial
-     
+         
 class ChildStepThreeCreateView(LoginRequiredMixin, CreateView):
     """Vista para registrar el padre"""
     model = Parent
@@ -195,36 +207,44 @@ class ChildStepThreeCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.is_mother = False
         form.instance.created_by = self.request.user
+        
+        # Obtener el NIP del formulario
+        nip = form.cleaned_data.get('nip')
+        
         # 🔹 Buscar si ya existe usuario con este nip
-        user = User.objects.filter(nip=form.instance.nip).first()
+        user = UserApp.objects.filter(nip=nip).first()
         if not user:
-            username = f"{form.instance.first_name.lower()}{form.instance.nip}"
-            password = f"{form.instance.first_name}{form.instance.nip}"
-            user = User.objects.create_user(
+            # Generar username y contraseña
+            username = f"{form.cleaned_data['first_name'].lower()}{nip}"
+            password = f"{form.cleaned_data['first_name']}{nip}"
+            user = UserApp.objects.create_user(
                 username=username,
-                first_name=form.instance.first_name,
-                last_name=form.instance.last_name,
+                first_name=form.cleaned_data['first_name'],
+                last_name=form.cleaned_data['last_name'],
                 password=password,
-                nip=form.instance.nip
+                nip=nip
             )
             progenitor_group, _ = Group.objects.get_or_create(name="Progenitor")
             user.groups.add(progenitor_group)
+        
+        # Asignar el usuario al Parent
         form.instance.user = user
-        # 🔹 Buscar padre existente por nip
-        parent = Parent.objects.filter(nip=form.instance.nip, is_mother=False).first()
+        
+        # 🔹 Buscar padre existente por nip (a través del usuario)
+        parent = Parent.objects.filter(user__nip=nip, is_mother=False).first()
         if parent is None:
             obj = super().form_valid(form)
             id_parent = form.instance.id
         else:
             # actualizar padre existente
-            parent.first_name = form.instance.first_name
-            parent.last_name = form.instance.last_name
-            parent.address = form.instance.address
-            parent.phone = form.instance.phone
-            parent.illnesses = form.instance.illnesses
-            parent.alcoholism = form.instance.alcoholism
-            parent.smoking = form.instance.smoking
-            parent.life = form.instance.life
+            parent.first_name = form.cleaned_data['first_name']
+            parent.last_name = form.cleaned_data['last_name']
+            parent.address = form.cleaned_data['address']
+            parent.phone = form.cleaned_data['phone']
+            parent.illnesses = form.cleaned_data['illnesses']
+            parent.alcoholism = form.cleaned_data['alcoholism']
+            parent.smoking = form.cleaned_data['smoking']
+            parent.life = form.cleaned_data['life']
             # 🔹 Agregar el campo can_pickup
             parent.can_pickup = form.cleaned_data.get('can_pickup', False)
             if not parent.user:
@@ -237,6 +257,7 @@ class ChildStepThreeCreateView(LoginRequiredMixin, CreateView):
             child.father_id = id_parent
             child.save()
             return HttpResponseRedirect(self.get_success_url())
+        
         # 🔹 Vincular padre al niño (nuevo caso)
         child_id = self.request.session.get('child_id')
         child = Child.objects.get(pk=child_id)
@@ -248,7 +269,8 @@ class ChildStepThreeCreateView(LoginRequiredMixin, CreateView):
         context = super().get_context_data(**kwargs)
         context["title_page"] = "Niños"
         context["pk"] = self.kwargs.get('pk')
-        context["parent"] = Parent.objects.filter(user=self.request.user, is_mother=False).first()
+        parent = Parent.objects.filter(user=self.request.user, is_mother=False).first()
+        context["parent"] = parent
         # 🔹 Agregar etiqueta para el checkbox
         context["pickup_label"] = "¿Puede recoger al niño?"
         return context
@@ -257,8 +279,10 @@ class ChildStepThreeCreateView(LoginRequiredMixin, CreateView):
         initial = super().get_initial()
         parent = Parent.objects.filter(user=self.request.user, is_mother=False).first()
         if parent:
+            # Obtenemos el nip del usuario asociado al parent
+            nip = parent.user.nip if parent.user else ''
             initial.update({
-                'nip': parent.nip,
+                'nip': nip,
                 'first_name': parent.first_name,
                 'last_name': parent.last_name,
                 'address': parent.address,
@@ -270,8 +294,8 @@ class ChildStepThreeCreateView(LoginRequiredMixin, CreateView):
                 # 🔹 Agregar el valor inicial de can_pickup
                 'can_pickup': parent.can_pickup,
             })
-        return initial    
-    
+        return initial
+      
 class ChildStepFourCreateView(LoginRequiredMixin, CreateView):
     model = Child
     form_class = RelationshipForm
@@ -299,19 +323,19 @@ class ChildStepFourCreateView(LoginRequiredMixin, CreateView):
         context["title_page"] = "Niños"
         context["pk"] = self.kwargs.get('pk')
         return context
-
+    
 class ChildStepFiveCreateView(LoginRequiredMixin, CreateView):
     model = Family
     form_class = ApprovedForm
     template_name = "core/child_form_five.html"
-
+    
     def get_success_url(self):
         return reverse("core:child-list")
-
+    
     def form_invalid(self, form):
         print('ERROR', form.errors)
         return super().form_invalid(form)
-
+    
     def form_valid(self, form, *args, **kwargs): 
         if form.instance.first_name == '' and form.instance.last_name == '' and form.instance.ic is None:
             return HttpResponseRedirect(reverse('core:child-list'))      
@@ -329,42 +353,42 @@ class ChildStepFiveCreateView(LoginRequiredMixin, CreateView):
         
         # Verificar si la madre puede recoger y agregarla si es necesario
         if child.mother and child.mother.can_pickup:
-            # Verificar si ya existe un registro para la madre con el mismo ic y child_id
-            if not Family.objects.filter(child=child, ic=child.mother.nip).exists():
-                try:
-                    Family.objects.create(
-                        type="Approved",
-                        status="Aprobado",
-                        relationship="Madre",
-                        first_name=child.mother.first_name,
-                        last_name=child.mother.last_name,
-                        ic=child.mother.nip,  # Usamos el NIP como identificación
-                        child=child
-                    )
-                except IntegrityError:
-                    # Si hay un error de integridad, lo manejamos y continuamos
-                    pass
+            # Obtener el NIP de la madre a través del usuario
+            mother_nip = child.mother.user.nip if child.mother.user else None
+            if mother_nip:
+                # Usar get_or_create para evitar duplicados
+                Family.objects.get_or_create(
+                    child=child,
+                    ic=mother_nip,
+                    defaults={
+                        'type': "Approved",
+                        'status': "Aprobado",
+                        'relationship': "Madre",
+                        'first_name': child.mother.first_name,
+                        'last_name': child.mother.last_name,
+                    }
+                )
         
         # Verificar si el padre puede recoger y agregarlo si es necesario
         if child.father and child.father.can_pickup:
-            # Verificar si ya existe un registro para el padre con el mismo ic y child_id
-            if not Family.objects.filter(child=child, ic=child.father.nip).exists():
-                try:
-                    Family.objects.create(
-                        type="Approved",
-                        status="Aprobado",
-                        relationship="Padre",
-                        first_name=child.father.first_name,
-                        last_name=child.father.last_name,
-                        ic=child.father.nip,  # Usamos el NIP como identificación
-                        child=child
-                    )
-                except IntegrityError:
-                    # Si hay un error de integridad, lo manejamos y continuamos
-                    pass
+            # Obtener el NIP del padre a través del usuario
+            father_nip = child.father.user.nip if child.father.user else None
+            if father_nip:
+                # Usar get_or_create para evitar duplicados
+                Family.objects.get_or_create(
+                    child=child,
+                    ic=father_nip,
+                    defaults={
+                        'type': "Approved",
+                        'status': "Aprobado",
+                        'relationship': "Padre",
+                        'first_name': child.father.first_name,
+                        'last_name': child.father.last_name,
+                    }
+                )
         
         return response
-
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title_page"] = "Niños"
@@ -378,7 +402,8 @@ class ChildStepFiveCreateView(LoginRequiredMixin, CreateView):
         context["mother_can_pickup"] = child.mother.can_pickup if child.mother else False
         context["father_can_pickup"] = child.father.can_pickup if child.father else False
         
-        return context    
+        return context
+
 @csrf_exempt
 @require_http_methods(['POST'])
 def save_relationship(request):
@@ -466,7 +491,7 @@ class ChildListView(LoginRequiredMixin, ListView):
 
         parent = Parent.objects.filter(user=user).first()
         if parent:
-            return queryset.filter(Q(mother__nip=parent.nip) | Q(father__nip=parent.nip))
+            return queryset.filter(Q(mother=parent) | Q(father=parent))
 
         return queryset.none()
     

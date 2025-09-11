@@ -29,35 +29,56 @@ class ProfessorCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         first_name = form.cleaned_data["first_name"]
-        last_name = form.cleaned_data["last_name"]
         nip = form.cleaned_data["nip"]
-
-        username = f"{first_name.lower()}{last_name.replace(' ', '').lower()}"
-        if UserApp.objects.filter(username=username).exists():
-            form.add_error(None, "Este nombre de usuario ya está en uso.")
-            return self.form_invalid(form)
-
+        
+        # Función para limpiar cadenas (quitar acentos, espacios, caracteres especiales)
+        import unicodedata
+        def clean_string(text):
+            # Normalizar para eliminar acentos y convertir a ASCII
+            text = unicodedata.normalize('NFD', text).encode('ascii', 'ignore').decode('utf-8')
+            # Mantener solo caracteres alfanuméricos
+            return ''.join(c for c in text if c.isalnum()).lower()
+        
+        # Limpiar el nombre y el NIP
+        clean_name = clean_string(first_name)
+        clean_nip = clean_string(str(nip))
+        
+        # Generar username: nombre limpio + NIP limpio
+        base_username = f"{clean_name}{clean_nip}"
+        
+        # Asegurar que no sea demasiado largo (máximo 150 caracteres)
+        username = base_username[:150]
+        
+        # Verificar que el username sea único
+        original_username = username
+        counter = 1
+        while UserApp.objects.filter(username=username).exists():
+            # Si ya existe, agregar un sufijo numérico
+            suffix = str(counter)
+            username = f"{original_username[:150-len(suffix)]}{suffix}"
+            counter += 1
+        
+        # Validar que el nip no exista en UserApp
         if UserApp.objects.filter(nip=nip).exists():
             form.add_error("nip", "Este NIP ya está registrado en usuarios.")
             return self.form_invalid(form)
-
+        
         # Crear usuario
         user = UserApp.objects.create_user(
             username=username,
             first_name=first_name,
-            last_name=last_name,
-            password=username,
+            last_name="",  # No usamos el apellido para el username
+            password=username,  # La contraseña es igual al username
             security_question=form.cleaned_data.get("security_question"),
             security_answer=form.cleaned_data.get("security_answer"),
             rol="Profesor",
             nip=nip,
         )
         user.groups.add(Group.objects.get(name="Profesor"))
-
-        # Guardar Professor del formulario asociado a ese user (una sola fila)
+        
+        # Guardar Professor del formulario asociado a ese user
         form.instance.user = user
         return super().form_valid(form)
-
 
     def get_context_data(self, **kwargs):
         context = super(ProfessorCreateView, self).get_context_data(**kwargs)

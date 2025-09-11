@@ -178,6 +178,7 @@
                                 <div class="media-body valign-middle mt-2">
                                     <i class="fa fa-female text-primary"></i> {{mother}}
                                     <p class="text-muted mb-0"><i class="fa fa-phone text-primary"></i> {{mother.phone}}</p>
+                                    {% if "Progenitor" == user.groups.all.0.name %}
                                     <a
                                         id="bDetails"
                                         href="{% url 'core:parent-edit' mother.id %}"
@@ -185,6 +186,7 @@
                                     >
                                         <span class="fe fe-edit"> </span> Editar
                                     </a>
+                                    {%endif%}
                                 </div>
                             </div>
                             <hr>
@@ -194,6 +196,7 @@
                                 <div class="media-body valign-middle mt-2">
                                     <i class="fa fa-male text-success"></i> {{father}}
                                     <p class="text-muted mb-0"><i class="fa fa-phone text-success"></i> {{father.phone}}</p>
+                                    {% if "Progenitor" == user.groups.all.0.name %}
                                     <a
                                         id="bDetails"
                                         href="{% url 'core:parent-edit' father.id %}"
@@ -201,6 +204,7 @@
                                     >
                                         <span class="fe fe-edit"> </span> Editar
                                     </a>
+                                    {%endif%}
                                 </div>
                             </div>
                             {% endif %}
@@ -221,46 +225,6 @@
                 </div>
               </div>
           </div>
-          <div class="col-xl-3">              
-              <div class="card">
-                <div class="card-header">
-                    <div class="card-title"><i class="fa fa-car"></i> Me voy con...</div>
-                </div>
-                <div class="card-body">
-                    <div class="">
-                        {% for member in family_approved %}                   
-                            <div class="media overflow-visible">
-                                <div class="media-body valign-middle mt-2">
-                                    <i class="fa fa-user text-primary"></i> {{member}}
-                                    <p class="text-muted mb-0"><i class="fa fa-address-card text-primary"></i> {{member.ic}}</p>
-                                    <p class="text-muted mb-0"><i class="fa fa-group text-primary"></i> {{member.relationship}}</p>
-                                    <a
-                                    id="bDetails"
-                                    href="{% url 'core:family-edit' member.id %}"
-                                    class=""
-                                >
-                                    <span class="fe fe-edit"> </span> Editar
-                                </a>
-                                </div>
-                            </div>
-                            <hr>
-                        {% empty %}
-                          <p>Uppsss, no hay nadie autorizado</p>
-                        {% endfor %}
-                    </div>
-                </div>
-              </div>
-              <div class="card">
-                  <div class="card-header">
-                      <div class="card-title">
-                        <i class="fa fa-shopping-basket"></i> Cuidado con esto...
-                      </div>
-                  </div>
-                  <div class="card-body">
-                      <p class="text-primary">{{object.food_requirements|default:"-"}}</p>
-                  </div>
-              </div>        
-          </div>
           <div class="col-xl-3">     
             <div class="card">
                 <div class="card-header">
@@ -274,6 +238,7 @@
                             <i class="fa fa-user text-primary"></i> {{member}}
                             <p class="text-muted mb-0"><i class="fa fa-hourglass text-primary"></i> {{member.age}} año(s)</p>
                             <p class="text-muted mb-0"><i class="fa fa-group text-primary"></i> {{member.relationship}}</p>
+                            {% if "Progenitor" == user.groups.all.0.name %}
                             <a
                                 id="bDetails"
                                 href="{% url 'core:family-edit' member.id %}"
@@ -281,6 +246,7 @@
                               >
                                 <span class="fe fe-edit"> </span> Editar
                               </a>
+                            {%endif%}
                         </div>
                       </div>
                       <hr>
@@ -290,7 +256,49 @@
                     </div>
                 </div>
             </div>
-             <div class="card">
+            <div class="card">
+                  <div class="card-header">
+                      <div class="card-title">
+                        <i class="fa fa-shopping-basket"></i> Cuidado con esto...
+                      </div>
+                  </div>
+                  <div class="card-body">
+                      <p class="text-primary">{{object.food_requirements|default:"-"}}</p>
+                  </div>
+              </div>     
+        </div>
+          <div class="col-xl-3">              
+              <div class="card">
+                <div class="card-header">
+                    <div class="card-title"><i class="fa fa-car"></i> Me voy con...</div>
+                </div>
+                <div class="card-body">
+                    <div class="">
+                        {% for member in family_approved %}                   
+                            <div class="media overflow-visible">
+                                <div class="media-body valign-middle mt-2">
+                                    <i class="fa fa-user text-primary"></i> {{member}}
+                                    <p class="text-muted mb-0"><i class="fa fa-address-card text-primary"></i> {{member.ic}}</p>
+                                    <p class="text-muted mb-0"><i class="fa fa-group text-primary"></i> {{member.relationship}}</p>
+                                    {% if "Progenitor" == user.groups.all.0.name %}
+                                    <a
+                                    id="bDetails"
+                                    href="{% url 'core:family-edit' member.id %}"
+                                    class=""
+                                >
+                                    <span class="fe fe-edit"> </span> Editar
+                                </a>
+                                {%endif%}
+                                </div>
+                            </div>
+                            <hr>
+                        {% empty %}
+                          <p>Uppsss, no hay nadie autorizado</p>
+                        {% endfor %}
+                    </div>
+                </div>
+              </div>
+              <div class="card">
                   <div class="card-header">
                       <div class="card-title">
                         <i class="fa fa-shopping-basket"></i> Observaciones
@@ -299,8 +307,10 @@
                   <div class="card-body">
                       <p class="text-primary">{{object.observations|default:"-"}}</p>
                   </div>
-              </div>  
-        </div>
+              </div> 
+                 
+          </div>
+          
       </div>
   </div>
   <!-- COL-END -->

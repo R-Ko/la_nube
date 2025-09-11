@@ -100,6 +100,18 @@ class BillListHistoryView(LoginRequiredMixin, ListView):
         context["title_page"] = "Facturas Históricas"
         return context
     
+
+class BillHardDeleteView(LoginRequiredMixin, DeleteView):
+    model = Bill
+    success_url = reverse_lazy('core:bill-history')
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.delete()  # aquí sí se borra de la BD
+        messages.add_message(request, messages.SUCCESS, "La factura ha sido eliminada definitivamente.")
+        return HttpResponseRedirect(self.success_url)
+
+
 @csrf_exempt
 @require_http_methods(['GET'])
 def get_data(request):
