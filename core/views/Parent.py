@@ -31,7 +31,6 @@ class ParentCreateView(LoginRequiredMixin, CreateView):
         print('ERROR',form.errors)
         return super(ParentCreateView, self).form_invalid(form)
 
-
     def form_valid(self, form):
         child = Child.objects.get(id=self.request.POST['child'])
 
@@ -49,35 +48,56 @@ class ParentCreateView(LoginRequiredMixin, CreateView):
 
         # Crear usuario asociado al padre
         first_name = form.cleaned_data["first_name"]
-        last_name = form.cleaned_data["last_name"]
-        username = f"{first_name[:2].lower()}{last_name.replace(' ', '').lower()}"
 
+        # Función para limpiar cadenas (quitar acentos, espacios, caracteres especiales)
+        import unicodedata
+        def clean_string(text):
+            text = unicodedata.normalize('NFD', text).encode('ascii', 'ignore').decode('utf-8')
+            return ''.join(c for c in text if c.isalnum()).lower()
+
+        # Limpiar el nombre y el NIP
+        clean_name = clean_string(first_name)
+        clean_nip = clean_string(str(nip))
+
+        # Generar username: nombre limpio + NIP limpio
+        base_username = f"{clean_name}{clean_nip}"
+        username = base_username[:150]
+
+        # Verificar que el username sea único
+        original_username = username
+        counter = 1
+        while UserApp.objects.filter(username=username).exists():
+            suffix = str(counter)
+            username = f"{original_username[:150-len(suffix)]}{suffix}"
+            counter += 1
+
+        # Crear el usuario con username y contraseña iguales
         user = UserApp.objects.create_user(
             username=username,
             first_name=first_name,
-            last_name=last_name,
-            password=username,
+            last_name="",  # No usamos el apellido para el username
+            password=username,  # La contraseña es igual al username
             security_question=form.cleaned_data.get("security_question"),
             security_answer=form.cleaned_data.get("security_answer"),
-            nip=nip,  # 👈 Guardamos también el nip en UserApp
+            nip=nip,
             rol="Progenitor"
         )
         user.groups.add(Group.objects.get(name="Progenitor"))
 
-        # asignar usuario al padre
+        # Asignar usuario al padre (pero NO guardar todavía)
         form.instance.user = user
         form.instance.created_by = self.request.user
-        form.instance.save()
 
-        # asignar relación con niño
+        # Guardar relación con niño después de que el padre se cree
+        response = super(ParentCreateView, self).form_valid(form)
+
         if "mother" in self.request.POST:
             child.mother = form.instance
         else:
             child.father = form.instance
         child.save()
 
-        return super(ParentCreateView, self).form_valid(form)
-
+        return response
 
 
 
@@ -109,9 +129,11 @@ class ParentEditView(LoginRequiredMixin, UpdateView):
 
     def get_initial(self):
         initial = super().get_initial()
+        u = self.object.user
         if self.object and self.object.user:
             initial["security_question"] = self.object.user.security_question
             initial["security_answer"] = self.object.user.security_answer
+            initial["nip"] = self.object.user.nip
         return initial
 
     def form_invalid(self, form):

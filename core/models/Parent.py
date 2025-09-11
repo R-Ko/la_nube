@@ -11,10 +11,10 @@ SCHOOL_LEVEL = [
 ]
 
 class Parent(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.OneToOneField("UserApp", on_delete=models.CASCADE, related_name="parent")
     first_name = models.CharField(max_length=50, verbose_name="Nombre", null=True)
     last_name = models.CharField(max_length=50, verbose_name="Apellidos", null=True)
-    nip = models.CharField(max_length=50, verbose_name="NIP", null=True, unique = False)
+    #nip = models.CharField(max_length=50, verbose_name="NIP", null=True, unique = False)
     # date_birth = models.DateField(verbose_name="Fecha de nacimiento", null=True)
     address = models.CharField(max_length=200, verbose_name="Dirección", null=True)
     phone = models.CharField(max_length=50, verbose_name="Teléfono", null=True)

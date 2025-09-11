@@ -54,11 +54,11 @@
                     </div>  
                     <div class="col-sm-3 col-md-3">
                         <div class="form-group">
-                            <label class="form-label">Monto</label>
+                            <label class="form-label">Monto <span class="text-red">*</span></label>
                             <input id="id_amount" name="amount" type="number" class="form-control" value="{{ form.amount.value|default:'' }}" placeholder="Monto">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Forma de Pago</label>
+                            <label class="form-label">Forma de Pago <span class="text-red">*</span></label>
                             <select data-placeholder="Select one or more..." id="id_currency" name="currency" class="select2 form-control select2-show-search form-select">
                                 <option {% if form.currency.value == "USD" %}selected{% endif %} value="USD" >USD</option>
                                 <option {% if form.currency.value == "MLC" %}selected{% endif %} value="MLC" >MLC</option>

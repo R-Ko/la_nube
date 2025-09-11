@@ -75,6 +75,7 @@ class ParentForm(forms.ModelForm):
     alcoholism = forms.BooleanField(required=False)
     smoking = forms.BooleanField(required=False)
     can_pickup = forms.BooleanField(required=False, label="¿Puede recoger al niño?")
+    nip = forms.CharField(required=True, label="NIP")
     
     security_question = forms.CharField(
         required=False,

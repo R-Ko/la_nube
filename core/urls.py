@@ -86,6 +86,8 @@ urlpatterns = [
     path('bill/<pk>/delete/', Bill.BillDeleteView.as_view(), name='bill-delete'),
     path('get_data', Bill.get_data, name="get_data"),
     path('bill_history/', Bill.BillListHistoryView.as_view(), name='bill-history'),
+    path('bill/<pk>/hard_delete/', Bill.BillHardDeleteView.as_view(), name='bill-hard-delete'),
+
 
     # Classgroup 
     path('class/', ClassGroup.ClassGroupListView.as_view(), name='class-list'),
